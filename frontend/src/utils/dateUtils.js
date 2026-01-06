@@ -29,13 +29,17 @@ const bsCalendarData = {
   2090: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31]
 }
 
-// Reference date: 2000-01-01 BS = 1943-04-14 AD
+// Reference date: 2000-01-01 BS (Baisakh 1) = 1943-04-14 AD (April 14)
 const refBsYear = 2000
-const refAdDate = new Date(1943, 3, 14) // April 14, 1943
+const refAdDate = new Date(1943, 3, 14) // April 14, 1943 (month is 0-indexed: 3 = April)
 
 function getTotalDaysInBsYear(year) {
   const monthDays = bsCalendarData[year]
-  if (!monthDays) return 365 // Default fallback
+  if (!monthDays) {
+    // Log warning and use approximate fallback for years outside range
+    console.warn(`BS calendar data not available for year ${year}, using approximate value`)
+    return 365
+  }
   return monthDays.reduce((sum, days) => sum + days, 0)
 }
 
