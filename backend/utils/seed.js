@@ -14,7 +14,7 @@ const seedData = {
   admin: {
     name: 'Amir Bahadur Shrestha',
     email: process.env.ADMIN_EMAIL || 'admin@amirlearner.me',
-    password: process.env.ADMIN_PASSWORD || 'changeme123',
+    password: process.env.ADMIN_PASSWORD,
     role: 'superadmin'
   },
 
@@ -191,6 +191,19 @@ const seedData = {
 
 const seedDB = async () => {
   try {
+    // Validate required environment variables
+    if (!process.env.ADMIN_PASSWORD) {
+      console.error('ERROR: ADMIN_PASSWORD environment variable is required.')
+      console.error('Please set a strong password in your .env file:')
+      console.error('  ADMIN_PASSWORD=your_strong_password_here')
+      process.exit(1)
+    }
+
+    if (process.env.ADMIN_PASSWORD.length < 8) {
+      console.error('ERROR: ADMIN_PASSWORD must be at least 8 characters long.')
+      process.exit(1)
+    }
+
     await mongoose.connect(process.env.MONGODB_URI)
     console.log('Connected to MongoDB')
 
