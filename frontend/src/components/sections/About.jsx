@@ -64,10 +64,12 @@ export default function About() {
                 <div className="relative rounded-2xl overflow-hidden">
                   <div className="aspect-square bg-gradient-to-br from-blue-500 to-purple-600 p-1 rounded-2xl">
                     <div className="w-full h-full bg-[var(--bg-primary)] rounded-xl overflow-hidden">
-                      {/* Placeholder for profile image */}
-                      <div className="w-full h-full bg-gradient-to-br from-blue-500/20 to-purple-600/20 flex items-center justify-center">
-                        <span className="text-8xl">👨‍💻</span>
-                      </div>
+                      {/* Profile Image */}
+                      <img
+                        src="/images/profile.jpg"
+                        alt="Amir Bahadur Shrestha"
+                        className="w-full h-full object-cover"
+                      />
                     </div>
                   </div>
                 </div>
