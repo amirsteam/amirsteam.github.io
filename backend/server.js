@@ -40,11 +40,22 @@ const corsOptions = {
     // Allow requests with no origin (like mobile apps or curl requests)
     if (!origin) return callback(null, true);
 
+    // Check if origin is in allowed list
     if (allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
+      return callback(null, true);
     }
+
+    // Allow Vercel preview deployments (amirsteam-github-io*.vercel.app)
+    if (origin.match(/^https:\/\/amirsteam-github-io.*\.vercel\.app$/)) {
+      return callback(null, true);
+    }
+
+    // Allow amirlearner.me and subdomains
+    if (origin.match(/^https:\/\/(.*\.)?amirlearner\.me$/)) {
+      return callback(null, true);
+    }
+
+    callback(new Error("Not allowed by CORS"));
   },
   credentials: true,
   optionsSuccessStatus: 200,
