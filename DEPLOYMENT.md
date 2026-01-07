@@ -22,9 +22,52 @@ This guide covers deploying the MERN Portfolio Platform to production.
    mongodb+srv://<username>:<password>@cluster.xxxxx.mongodb.net/portfolio
    ```
 
-## 🔧 Step 2: Backend Deployment (DigitalOcean App Platform)
+## 🔧 Step 2: Backend Deployment
 
-### Option A: DigitalOcean App Platform
+### 🎓 Best for Students (Free, No Credit Card)
+
+| Platform | Free Tier | Credit Card | Best For |
+|----------|-----------|-------------|----------|
+| **Railway** ⭐ | $5/month credits | ❌ Not needed | Best overall |
+| **Render** | Free (with cold starts) | ❌ Not needed | Simple projects |
+| **Cyclic** | Completely free | ❌ Not needed | Node.js apps |
+
+### Option A: Railway (Recommended for Students) ⭐
+
+1. Go to https://railway.app
+2. Sign in with **GitHub** (uses your student verification!)
+3. Click **"New Project"** → **"Deploy from GitHub repo"**
+4. Select `amirsteam.github.io` repository
+5. Set **Root Directory** to `backend`
+6. Go to **Variables** tab and add:
+   ```
+   NODE_ENV=production
+   PORT=5000
+   MONGODB_URI=your_mongodb_atlas_uri
+   JWT_SECRET=your_production_secret
+   JWT_EXPIRES_IN=7d
+   FRONTEND_URL=https://amirlearner.me
+   ADMIN_URL=https://admin.amirlearner.me
+   ```
+7. Railway auto-deploys! Get your URL from the **Settings** tab
+
+> 💡 **Tip**: Generate JWT_SECRET with: `node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"`
+
+### Option B: Render (Free Alternative)
+
+1. Go to https://render.com
+2. Sign in with GitHub
+3. Click **"New"** → **"Web Service"**
+4. Connect your repository, set **Root Directory** to `backend`
+5. Settings:
+   - **Build Command**: `npm install`
+   - **Start Command**: `npm start`
+6. Add environment variables (same as Railway)
+7. Deploy!
+
+> ⚠️ **Note**: Free tier sleeps after 15 min inactivity (30 sec cold start)
+
+### Option C: DigitalOcean App Platform
 
 1. Push your code to GitHub
 2. Go to DigitalOcean App Platform
