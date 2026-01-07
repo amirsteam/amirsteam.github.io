@@ -1,7 +1,8 @@
 import { motion, useInView } from 'framer-motion'
-import { useRef } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { School, ShoppingCart, Newspaper, Check, ArrowRight } from 'lucide-react'
-import { services } from '../../data'
+import { api } from '../../lib/api'
+import { services as staticServices } from '../../data'
 
 const iconMap = {
   School,
@@ -12,6 +13,17 @@ const iconMap = {
 export default function Services() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
+  const [services, setServices] = useState(staticServices)
+
+  useEffect(() => {
+    async function fetchServices() {
+      const response = await api.getServices()
+      if (response?.success && response.data?.length > 0) {
+        setServices(response.data)
+      }
+    }
+    fetchServices()
+  }, [])
 
   const containerVariants = {
     hidden: { opacity: 0 },

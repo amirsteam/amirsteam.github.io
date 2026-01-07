@@ -1,13 +1,25 @@
 import { motion, useInView } from 'framer-motion'
-import { useRef } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Calendar, Clock, ArrowRight, Tag } from 'lucide-react'
-import { blogPosts } from '../../data'
+import { api } from '../../lib/api'
+import { blogPosts as staticBlogPosts } from '../../data'
 import { formatDate } from '../../utils/dateUtils'
 
 export default function Blog() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
+  const [blogPosts, setBlogPosts] = useState(staticBlogPosts)
+
+  useEffect(() => {
+    async function fetchBlogs() {
+      const response = await api.getBlogs()
+      if (response?.success && response.data?.length > 0) {
+        setBlogPosts(response.data)
+      }
+    }
+    fetchBlogs()
+  }, [])
 
   const containerVariants = {
     hidden: { opacity: 0 },

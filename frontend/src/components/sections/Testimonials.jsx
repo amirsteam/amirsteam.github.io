@@ -1,12 +1,24 @@
 import { motion, useInView } from 'framer-motion'
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { Quote, Star, ChevronLeft, ChevronRight } from 'lucide-react'
-import { testimonials } from '../../data'
+import { api } from '../../lib/api'
+import { testimonials as staticTestimonials } from '../../data'
 
 export default function Testimonials() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
   const [currentIndex, setCurrentIndex] = useState(0)
+  const [testimonials, setTestimonials] = useState(staticTestimonials)
+
+  useEffect(() => {
+    async function fetchTestimonials() {
+      const response = await api.getTestimonials()
+      if (response?.success && response.data?.length > 0) {
+        setTestimonials(response.data)
+      }
+    }
+    fetchTestimonials()
+  }, [])
 
   const containerVariants = {
     hidden: { opacity: 0 },

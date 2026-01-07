@@ -1,7 +1,8 @@
 import { motion, useInView } from 'framer-motion'
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { Code2, Palette, Film, GraduationCap } from 'lucide-react'
-import { skills } from '../../data'
+import { api } from '../../lib/api'
+import { skills as staticSkills } from '../../data'
 
 const iconMap = {
   Code2,
@@ -14,6 +15,23 @@ export default function Skills() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
   const [activeCategory, setActiveCategory] = useState('mernEngineering')
+  const [skills, setSkills] = useState(staticSkills)
+
+  useEffect(() => {
+    async function fetchSkills() {
+      const response = await api.getSkills()
+      if (response?.success && response.data?.length > 0) {
+        // Convert array to object format matching static data structure
+        const skillsObj = {}
+        response.data.forEach(skill => {
+          skillsObj[skill.key] = skill
+        })
+        setSkills(skillsObj)
+        setActiveCategory(response.data[0]?.key || 'mernEngineering')
+      }
+    }
+    fetchSkills()
+  }, [])
 
   const categories = Object.entries(skills).map(([key, value]) => ({
     key,

@@ -1,11 +1,23 @@
 import { motion, useInView } from 'framer-motion'
-import { useRef } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { Briefcase, GraduationCap, MapPin, Calendar } from 'lucide-react'
-import { experience, education } from '../../data'
+import { api } from '../../lib/api'
+import { experience as staticExperience, education } from '../../data'
 
 export default function Experience() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
+  const [experience, setExperience] = useState(staticExperience)
+
+  useEffect(() => {
+    async function fetchExperience() {
+      const response = await api.getExperience()
+      if (response?.success && response.data?.length > 0) {
+        setExperience(response.data)
+      }
+    }
+    fetchExperience()
+  }, [])
 
   const containerVariants = {
     hidden: { opacity: 0 },

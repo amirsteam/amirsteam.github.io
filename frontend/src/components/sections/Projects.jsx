@@ -1,13 +1,25 @@
 import { motion, useInView } from 'framer-motion'
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { ExternalLink, Github, Play, ChevronRight } from 'lucide-react'
-import { projects } from '../../data'
+import { api } from '../../lib/api'
+import { projects as staticProjects } from '../../data'
 
 export default function Projects() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
   const [activeFilter, setActiveFilter] = useState('All')
   const [hoveredProject, setHoveredProject] = useState(null)
+  const [projects, setProjects] = useState(staticProjects)
+
+  useEffect(() => {
+    async function fetchProjects() {
+      const response = await api.getProjects()
+      if (response?.success && response.data?.length > 0) {
+        setProjects(response.data)
+      }
+    }
+    fetchProjects()
+  }, [])
 
   const categories = ['All', ...new Set(projects.map((p) => p.category))]
   const filteredProjects = activeFilter === 'All' 
