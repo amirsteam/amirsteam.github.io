@@ -19,6 +19,9 @@ const adminRoutes = require("./routes/admin");
 // Initialize express
 const app = express();
 
+// Trust proxy for Railway/production (needed for rate limiting)
+app.set('trust proxy', 1);
+
 // Connect to database
 connectDB();
 
