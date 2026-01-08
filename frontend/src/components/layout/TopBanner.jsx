@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { useState } from 'react'
+import { motion } from 'framer-motion'
 import { Mail, Phone, Sparkles } from 'lucide-react'
 
 // Contact information
@@ -38,27 +38,8 @@ const WhatsAppIcon = ({ size = 16, className = '' }) => (
 )
 
 export default function TopBanner() {
-  const [isVisible, setIsVisible] = useState(true)
-  const [lastScrollY, setLastScrollY] = useState(0)
   const [isHovered, setIsHovered] = useState(false)
 
-  // Hide banner on scroll down, show on scroll up
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY
-
-      if (currentScrollY > lastScrollY && currentScrollY > 100) {
-        setIsVisible(false)
-      } else {
-        setIsVisible(true)
-      }
-
-      setLastScrollY(currentScrollY)
-    }
-
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [lastScrollY])
 
   const iconButtonVariants = {
     initial: { scale: 1 },
@@ -88,56 +69,53 @@ export default function TopBanner() {
   }
 
   return (
-    <AnimatePresence>
-      {isVisible && (
+    <motion.div
+      initial={{ y: -50, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.3, ease: 'easeOut' }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className="fixed top-0 left-0 right-0 z-[60] bg-gradient-to-r from-slate-900 via-purple-900 to-slate-900 border-b border-purple-500/20"
+    >
+      {/* Animated background shimmer */}
+      <motion.div
+        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent"
+        style={{ backgroundSize: '200% 100%' }}
+        animate={shimmerAnimation}
+      />
+
+      {/* Sparkle effects */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
-          initial={{ y: -50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: -50, opacity: 0 }}
-          transition={{ duration: 0.3, ease: 'easeOut' }}
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-          className="fixed top-0 left-0 right-0 z-[60] bg-gradient-to-r from-slate-900 via-purple-900 to-slate-900 border-b border-purple-500/20"
+          className="absolute top-1 left-[10%] text-yellow-400/60"
+          animate={{
+            opacity: [0.3, 1, 0.3],
+            scale: [0.8, 1.2, 0.8],
+            rotate: [0, 180, 360]
+          }}
+          transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
         >
-          {/* Animated background shimmer */}
-          <motion.div
-            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent"
-            style={{ backgroundSize: '200% 100%' }}
-            animate={shimmerAnimation}
-          />
+          <Sparkles size={10} />
+        </motion.div>
+        <motion.div
+          className="absolute top-2 right-[15%] text-blue-400/60"
+          animate={{
+            opacity: [0.5, 1, 0.5],
+            scale: [1, 1.3, 1],
+            rotate: [0, -180, -360]
+          }}
+          transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+        >
+          <Sparkles size={8} />
+        </motion.div>
+      </div>
 
-          {/* Sparkle effects */}
-          <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <motion.div
-              className="absolute top-1 left-[10%] text-yellow-400/60"
-              animate={{
-                opacity: [0.3, 1, 0.3],
-                scale: [0.8, 1.2, 0.8],
-                rotate: [0, 180, 360]
-              }}
-              transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-            >
-              <Sparkles size={10} />
-            </motion.div>
-            <motion.div
-              className="absolute top-2 right-[15%] text-blue-400/60"
-              animate={{
-                opacity: [0.5, 1, 0.5],
-                scale: [1, 1.3, 1],
-                rotate: [0, -180, -360]
-              }}
-              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-            >
-              <Sparkles size={8} />
-            </motion.div>
-          </div>
+      <div className="container mx-auto px-4">
+        <div className="flex items-center justify-between h-9 md:h-10 text-xs md:text-sm">
 
-          <div className="container mx-auto px-4">
-            <div className="flex items-center justify-between h-9 md:h-10 text-xs md:text-sm">
-
-              {/* Left - Email with animation */}
-              <motion.a
-                href={`mailto:${CONTACT_INFO.email}`}
+          {/* Left - Email with animation */}
+          <motion.a
+            href={`mailto:${CONTACT_INFO.email}`}
                 className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors group"
                 whileHover={{ x: 3 }}
                 transition={{ type: 'spring', stiffness: 300 }}
@@ -268,8 +246,6 @@ export default function TopBanner() {
             transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
           />
         </motion.div>
-      )}
-    </AnimatePresence>
   )
 }
 
