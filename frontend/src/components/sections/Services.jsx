@@ -1,25 +1,32 @@
 import { motion, useInView } from 'framer-motion'
 import { useRef, useState, useEffect } from 'react'
-import { School, ShoppingCart, Newspaper, Check, ArrowRight } from 'lucide-react'
+import { School, ShoppingCart, Newspaper, Check, ArrowRight, Briefcase } from 'lucide-react'
 import { api } from '../../lib/api'
 import { services as staticServices } from '../../data'
+import { normalizeServiceArray } from '../../utils/normalizers'
 
 const iconMap = {
   School,
   ShoppingCart,
-  Newspaper
+  Newspaper,
+  Briefcase
 }
 
 export default function Services() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
-  const [services, setServices] = useState(staticServices)
+  // Normalize static data on init
+  const [services, setServices] = useState(() => normalizeServiceArray(staticServices))
 
   useEffect(() => {
     async function fetchServices() {
-      const response = await api.getServices()
-      if (response?.success && response.data?.length > 0) {
-        setServices(response.data)
+      try {
+        const response = await api.getServices()
+        if (response?.success && Array.isArray(response.data) && response.data.length > 0) {
+          setServices(response.data)
+        }
+      } catch (error) {
+        console.warn('Services fetch failed, using static data:', error)
       }
     }
     fetchServices()
@@ -43,6 +50,9 @@ export default function Services() {
       transition: { duration: 0.5 }
     }
   }
+
+  // Defensive array check
+  const safeServices = Array.isArray(services) ? services : []
 
   return (
     <section id="services" className="py-20 bg-[var(--bg-primary)]">
@@ -70,55 +80,58 @@ export default function Services() {
 
           {/* Services Grid */}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {services.map((service, index) => {
-              const IconComponent = iconMap[service.icon]
+            {safeServices.map((service, index) => {
+              const IconComponent = iconMap[service?.icon] || Briefcase
+              const safeFeatures = Array.isArray(service?.features) ? service.features : []
               return (
                 <motion.div
-                  key={service.id}
+                  key={service?.id || `service-${index}`}
                   variants={itemVariants}
                   whileHover={{ y: -10 }}
                   className={`relative rounded-2xl overflow-hidden ${
-                    service.popular
+                    service?.popular
                       ? 'bg-gradient-to-br from-blue-500 to-purple-600 p-[2px]'
                       : ''
                   }`}
                 >
-                  {service.popular && (
+                  {service?.popular && (
                     <div className="absolute top-4 right-4 z-10 px-3 py-1 rounded-full bg-white text-purple-600 text-xs font-bold">
                       Most Popular
                     </div>
                   )}
                   
-                  <div className={`h-full bg-[var(--bg-secondary)] rounded-2xl ${service.popular ? '' : 'border border-[var(--border-color)]'} p-8`}>
+                  <div className={`h-full bg-[var(--bg-secondary)] rounded-2xl ${service?.popular ? '' : 'border border-[var(--border-color)]'} p-8`}>
                     {/* Icon */}
                     <div className={`inline-flex p-4 rounded-2xl ${
-                      service.popular
+                      service?.popular
                         ? 'bg-gradient-to-r from-blue-500 to-purple-600'
                         : 'bg-[var(--bg-tertiary)]'
                     }`}>
-                      <IconComponent className={`w-8 h-8 ${service.popular ? 'text-white' : 'text-[var(--accent-primary)]'}`} />
+                      <IconComponent className={`w-8 h-8 ${service?.popular ? 'text-white' : 'text-[var(--accent-primary)]'}`} />
                     </div>
 
                     {/* Title & Description */}
                     <h3 className="mt-6 text-xl font-bold text-[var(--text-primary)]">
-                      {service.title}
+                      {service?.title || 'Service'}
                     </h3>
                     <p className="mt-2 text-[var(--text-secondary)]">
-                      {service.description}
+                      {service?.description || ''}
                     </p>
 
-                    {/* Features */}
+                    {/* Features - defensive rendering */}
                     <ul className="mt-6 space-y-3">
-                      {service.features.map((feature, i) => (
-                        <li key={i} className="flex items-start gap-3">
+                      {safeFeatures.map((feature, i) => (
+                        <li key={`${service?.id || index}-feature-${i}`} className="flex items-start gap-3">
                           <div className={`flex-shrink-0 p-1 rounded-full ${
-                            service.popular
+                            service?.popular
                               ? 'bg-green-500/20 text-green-500'
                               : 'bg-[var(--bg-tertiary)] text-[var(--accent-primary)]'
                           }`}>
                             <Check size={14} />
                           </div>
-                          <span className="text-sm text-[var(--text-secondary)]">{feature}</span>
+                          <span className="text-sm text-[var(--text-secondary)]">
+                            {typeof feature === 'string' ? feature : String(feature)}
+                          </span>
                         </li>
                       ))}
                     </ul>
@@ -126,10 +139,10 @@ export default function Services() {
                     {/* Price */}
                     <div className="mt-8 pt-8 border-t border-[var(--border-color)]">
                       <div className="flex items-baseline gap-1">
-                        <span className="text-sm text-[var(--text-muted)]">{service.priceNote}</span>
+                        <span className="text-sm text-[var(--text-muted)]">{service?.priceNote || 'Starting from'}</span>
                       </div>
                       <div className="flex items-baseline gap-1 mt-1">
-                        <span className="text-3xl font-bold text-[var(--text-primary)]">{service.price}</span>
+                        <span className="text-3xl font-bold text-[var(--text-primary)]">{service?.price || 'Contact'}</span>
                       </div>
                     </div>
 
@@ -139,7 +152,7 @@ export default function Services() {
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       className={`mt-6 w-full inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all ${
-                        service.popular
+                        service?.popular
                           ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:shadow-lg hover:shadow-blue-500/25'
                           : 'bg-[var(--bg-tertiary)] text-[var(--text-primary)] hover:bg-[var(--accent-primary)] hover:text-white'
                       }`}

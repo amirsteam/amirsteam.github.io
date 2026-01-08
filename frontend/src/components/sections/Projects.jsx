@@ -3,28 +3,36 @@ import { useRef, useState, useEffect } from 'react'
 import { ExternalLink, Github, Play, ChevronRight } from 'lucide-react'
 import { api } from '../../lib/api'
 import { projects as staticProjects } from '../../data'
+import { normalizeProjectArray } from '../../utils/normalizers'
 
 export default function Projects() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
   const [activeFilter, setActiveFilter] = useState('All')
   const [hoveredProject, setHoveredProject] = useState(null)
-  const [projects, setProjects] = useState(staticProjects)
+  // Normalize static data on init
+  const [projects, setProjects] = useState(() => normalizeProjectArray(staticProjects))
 
   useEffect(() => {
     async function fetchProjects() {
-      const response = await api.getProjects()
-      if (response?.success && response.data?.length > 0) {
-        setProjects(response.data)
+      try {
+        const response = await api.getProjects()
+        if (response?.success && Array.isArray(response.data) && response.data.length > 0) {
+          setProjects(response.data)
+        }
+      } catch (error) {
+        console.warn('Projects fetch failed, using static data:', error)
       }
     }
     fetchProjects()
   }, [])
 
-  const categories = ['All', ...new Set(projects.map((p) => p.category))]
-  const filteredProjects = activeFilter === 'All' 
-    ? projects 
-    : projects.filter((p) => p.category === activeFilter)
+  // Defensive array check
+  const safeProjects = Array.isArray(projects) ? projects : []
+  const categories = ['All', ...new Set(safeProjects.map((p) => p?.category || 'Other').filter(Boolean))]
+  const filteredProjects = activeFilter === 'All'
+    ? safeProjects
+    : safeProjects.filter((p) => p?.category === activeFilter)
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -90,12 +98,14 @@ export default function Projects() {
 
           {/* Projects Grid */}
           <motion.div layout className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredProjects.map((project, index) => (
+            {filteredProjects.map((project, index) => {
+              const safeTechStack = Array.isArray(project?.techStack) ? project.techStack : []
+              return (
               <motion.div
-                key={project.id}
+                key={project?.id || `project-${index}`}
                 layout
                 variants={itemVariants}
-                onMouseEnter={() => setHoveredProject(project.id)}
+                onMouseEnter={() => setHoveredProject(project?.id)}
                 onMouseLeave={() => setHoveredProject(null)}
                 className="group relative bg-[var(--bg-primary)] rounded-2xl overflow-hidden border border-[var(--border-color)] hover:border-[var(--accent-primary)] transition-all duration-300"
               >
@@ -103,22 +113,24 @@ export default function Projects() {
                 <div className="relative aspect-video overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-br from-blue-500/80 to-purple-600/80 flex items-center justify-center">
                     <span className="text-6xl">
-                      {project.id === 1 && '📰'}
-                      {project.id === 2 && '🛒'}
-                      {project.id === 3 && '🏫'}
-                      {project.id === 4 && '🎓'}
-                      {project.id === 5 && '💼'}
-                      {project.id === 6 && '📊'}
+                      {index === 0 && '📰'}
+                      {index === 1 && '🛒'}
+                      {index === 2 && '🏫'}
+                      {index === 3 && '🎓'}
+                      {index === 4 && '💼'}
+                      {index === 5 && '📊'}
+                      {index > 5 && '🚀'}
                     </span>
                   </div>
                   
                   {/* Overlay */}
                   <motion.div
                     initial={{ opacity: 0 }}
-                    animate={{ opacity: hoveredProject === project.id ? 1 : 0 }}
+                    animate={{ opacity: hoveredProject === project?.id ? 1 : 0 }}
                     className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent flex items-end justify-between p-4"
                   >
                     <div className="flex gap-2">
+                      {project?.liveUrl && (
                       <motion.a
                         href={project.liveUrl}
                         target="_blank"
@@ -130,6 +142,8 @@ export default function Projects() {
                       >
                         <ExternalLink size={18} />
                       </motion.a>
+                      )}
+                      {project?.githubUrl && (
                       <motion.a
                         href={project.githubUrl}
                         target="_blank"
@@ -141,8 +155,9 @@ export default function Projects() {
                       >
                         <Github size={18} />
                       </motion.a>
+                      )}
                     </div>
-                    {project.videoPreview && (
+                    {project?.videoPreview && (
                       <motion.button
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.95 }}
@@ -155,7 +170,7 @@ export default function Projects() {
                   </motion.div>
 
                   {/* Featured Badge */}
-                  {project.featured && (
+                  {project?.featured && (
                     <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-gradient-to-r from-yellow-500 to-orange-500 text-white text-xs font-semibold">
                       Featured
                     </div>
@@ -166,57 +181,63 @@ export default function Projects() {
                 <div className="p-6">
                   <div className="flex items-center gap-2 mb-3">
                     <span className="px-2 py-1 rounded text-xs font-medium bg-[var(--bg-secondary)] text-[var(--accent-primary)]">
-                      {project.category}
+                      {project?.category || 'Project'}
                     </span>
                   </div>
                   
                   <h3 className="text-xl font-bold text-[var(--text-primary)] mb-2 group-hover:text-[var(--accent-primary)] transition-colors">
-                    {project.title}
+                    {project?.title || 'Project'}
                   </h3>
                   
                   <p className="text-sm text-[var(--text-secondary)] mb-4 line-clamp-2">
-                    {project.description}
+                    {project?.description || ''}
                   </p>
 
                   {/* Problem & Solution */}
                   <div className="space-y-2 mb-4">
+                    {project?.problem && (
                     <div className="text-xs">
                       <span className="font-semibold text-red-500">Problem:</span>
                       <span className="text-[var(--text-muted)] ml-1 line-clamp-1">{project.problem}</span>
                     </div>
+                    )}
+                    {project?.solution && (
                     <div className="text-xs">
                       <span className="font-semibold text-green-500">Solution:</span>
                       <span className="text-[var(--text-muted)] ml-1 line-clamp-1">{project.solution}</span>
                     </div>
-                  </div>
-
-                  {/* Tech Stack */}
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {project.techStack.slice(0, 4).map((tech) => (
-                      <span
-                        key={tech}
-                        className="px-2 py-1 text-xs rounded bg-[var(--bg-secondary)] text-[var(--text-muted)]"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                    {project.techStack.length > 4 && (
-                      <span className="px-2 py-1 text-xs rounded bg-[var(--bg-secondary)] text-[var(--text-muted)]">
-                        +{project.techStack.length - 4}
-                      </span>
                     )}
                   </div>
 
+                  {/* Tech Stack - defensive rendering */}
+                  {safeTechStack.length > 0 && (
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {safeTechStack.slice(0, 4).map((tech, techIndex) => (
+                      <span
+                        key={`${project?.id || index}-tech-${techIndex}`}
+                        className="px-2 py-1 text-xs rounded bg-[var(--bg-secondary)] text-[var(--text-muted)]"
+                      >
+                        {typeof tech === 'string' ? tech : String(tech)}
+                      </span>
+                    ))}
+                    {safeTechStack.length > 4 && (
+                      <span className="px-2 py-1 text-xs rounded bg-[var(--bg-secondary)] text-[var(--text-muted)]">
+                        +{safeTechStack.length - 4}
+                      </span>
+                    )}
+                  </div>
+                  )}
+
                   {/* View Details Link */}
                   <motion.a
-                    href={`/projects/${project.slug}`}
+                    href={`/projects/${project?.slug || index}`}
                     className="inline-flex items-center gap-1 text-sm font-medium text-[var(--accent-primary)] hover:underline"
                   >
                     View Details <ChevronRight size={16} />
                   </motion.a>
                 </div>
               </motion.div>
-            ))}
+            )})}
           </motion.div>
 
           {/* View All Projects CTA */}

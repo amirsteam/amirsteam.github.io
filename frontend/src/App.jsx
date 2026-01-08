@@ -4,18 +4,21 @@ import Layout from './components/layout/Layout'
 import Home from './pages/Home'
 import ContactPage from './pages/ContactPage'
 import BlogPage from './pages/BlogPage'
+import ErrorBoundary from './components/ErrorBoundary'
 
 function App() {
   return (
-    <AnimatePresence mode="wait">
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path="contact" element={<ContactPage />} />
-          <Route path="blog" element={<BlogPage />} />
-        </Route>
-      </Routes>
-    </AnimatePresence>
+    <ErrorBoundary>
+      <AnimatePresence mode="wait">
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="contact" element={<ContactPage />} />
+            <Route path="blog" element={<BlogPage />} />
+          </Route>
+        </Routes>
+      </AnimatePresence>
+    </ErrorBoundary>
   )
 }
 
