@@ -2,8 +2,8 @@ export const personalInfo = {
   name: 'Amir Bahadur Shrestha',
   title: 'MERN Stack Developer & Digital Solutions Educator',
   tagline: 'Building Scalable Systems, Teaching Developers, Delivering Complete Digital Solutions',
-  email: 'amir@amirlearner.me',
-  phone: '+977 9800000000',
+  email: 'amirsvi766@gmail.com',
+  phone: '+977 9861158271',
   location: {
     city: 'Panauti',
     district: 'Kavre',
@@ -279,10 +279,10 @@ export const experience = [
 export const education = [
   {
     id: 1,
-    degree: 'Bachelor in Computer Science',
+    degree: 'MPhil in STEAM Education (Running)',
     institution: 'Kathmandu University',
     location: 'Dhulikhel, Nepal',
-    period: '2019 - 2023',
+    period: '2019 - 2025 (Expected)',
     description: 'Focused on software engineering, database systems, and web technologies.'
   },
   {
@@ -290,7 +290,7 @@ export const education = [
     degree: 'Self-taught MERN Stack Development',
     institution: 'Online Learning & Practice',
     location: 'Remote',
-    period: '2020 - 2022',
+    period: '2020 - 2025',
     description: 'Intensive self-study through Udemy, freeCodeCamp, and real project experience.'
   }
 ]
@@ -300,16 +300,16 @@ export const testimonials = [
     id: 1,
     name: 'Rajesh Sharma',
     role: 'Principal',
-    company: 'ABC Higher Secondary School',
+    company: 'Janahit Higher Secondary School',
     content: 'Amir transformed our school\'s digital presence completely. The website he built is not only beautiful but also easy for our staff to manage. His Google Workspace implementation was seamless.',
     avatar: '/testimonials/rajesh.jpg',
     rating: 5
   },
   {
     id: 2,
-    name: 'Sita Devi Thapa',
+    name: 'Anjana Shrestha',
     role: 'Founder',
-    company: 'Nepal Handcraft Export',
+    company: 'Nevan Handicraft',
     content: 'The e-commerce platform Amir built for our business has increased our online sales by 300%. His attention to detail and understanding of our needs was exceptional.',
     avatar: '/testimonials/sita.jpg',
     rating: 5

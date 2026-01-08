@@ -50,7 +50,7 @@ export default function About() {
               About Me
             </span>
             <h2 className="mt-2 text-3xl sm:text-4xl md:text-5xl font-bold text-[var(--text-primary)]">
-              Engineer. Educator. Creator.
+              Software Engineer. Educator. Creator.
             </h2>
             <div className="mt-4 w-20 h-1 bg-gradient-to-r from-blue-500 to-purple-600 mx-auto rounded-full" />
           </motion.div>
@@ -78,10 +78,10 @@ export default function About() {
                 <motion.div
                   animate={{ y: [-5, 5, -5] }}
                   transition={{ duration: 3, repeat: Infinity }}
-                  className="absolute -top-6 -right-6 bg-[var(--bg-primary)] p-4 rounded-xl shadow-xl border border-[var(--border-color)]"
+                  className="absolute -top-6 -right-6 bg-(--bg-primary) p-4 rounded-xl shadow-xl border border-[var(--border-color)]"
                 >
                   <div className="text-center">
-                    <span className="text-2xl font-bold text-[var(--accent-primary)]">3+</span>
+                    <span className="text-2xl font-bold text-[var(--accent-primary)]">10+</span>
                     <p className="text-xs text-[var(--text-muted)]">Years Experience</p>
                   </div>
                 </motion.div>
