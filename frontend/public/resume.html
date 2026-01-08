@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Amir Bahadur Shrestha - Resume</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: #fff;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 40px;
+    }
+
+    @media print {
+      body {
+        padding: 20px;
+        font-size: 11pt;
+      }
+      .no-print { display: none; }
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      padding-bottom: 20px;
+      border-bottom: 3px solid #6366f1;
+      margin-bottom: 30px;
+    }
+
+    .name {
+      font-size: 32px;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 5px;
+    }
+
+    .title {
+      font-size: 18px;
+      color: #6366f1;
+      font-weight: 500;
+      margin-bottom: 15px;
+    }
+
+    .contact-info {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      font-size: 13px;
+      color: #64748b;
+    }
+
+    .contact-info a {
+      color: #6366f1;
+      text-decoration: none;
+    }
+
+    .contact-info a:hover {
+      text-decoration: underline;
+    }
+
+    /* Sections */
+    .section {
+      margin-bottom: 25px;
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #1e293b;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #e2e8f0;
+      margin-bottom: 15px;
+    }
+
+    /* Summary */
+    .summary {
+      color: #475569;
+      font-size: 14px;
+    }
+
+    /* Experience & Education */
+    .item {
+      margin-bottom: 20px;
+    }
+
+    .item:last-child {
+      margin-bottom: 0;
+    }
+
+    .item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 5px;
+    }
+
+    .item-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: #1e293b;
+    }
+
+    .item-period {
+      font-size: 13px;
+      color: #6366f1;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .item-subtitle {
+      font-size: 14px;
+      color: #64748b;
+      margin-bottom: 8px;
+    }
+
+    .item-description {
+      font-size: 13px;
+      color: #475569;
+      margin-bottom: 8px;
+    }
+
+    .achievements {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .achievements li {
+      font-size: 13px;
+      color: #475569;
+      padding-left: 15px;
+      position: relative;
+      margin-bottom: 4px;
+    }
+
+    .achievements li::before {
+      content: "•";
+      color: #6366f1;
+      font-weight: bold;
+      position: absolute;
+      left: 0;
+    }
+
+    /* Skills */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .skill-category {
+      background: #f8fafc;
+      padding: 15px;
+      border-radius: 8px;
+      border-left: 3px solid #6366f1;
+    }
+
+    .skill-category-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #1e293b;
+      margin-bottom: 8px;
+    }
+
+    .skill-list {
+      font-size: 12px;
+      color: #64748b;
+      line-height: 1.8;
+    }
+
+    /* Projects */
+    .project {
+      margin-bottom: 15px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .project:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+      margin-bottom: 0;
+    }
+
+    .project-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #1e293b;
+    }
+
+    .project-tech {
+      font-size: 12px;
+      color: #6366f1;
+      margin: 4px 0;
+    }
+
+    .project-description {
+      font-size: 13px;
+      color: #475569;
+    }
+
+    /* Print Button */
+    .print-btn {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: white;
+      border: none;
+      padding: 15px 25px;
+      border-radius: 50px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .print-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <h1 class="name">Amir Bahadur Shrestha</h1>
+    <p class="title">MERN Stack Developer & Digital Solutions Educator</p>
+    <div class="contact-info">
+      <span>📧 <a href="mailto:amirsvi766@gmail.com">amirsvi766@gmail.com</a></span>
+      <span>📱 <a href="tel:+9779861158271">+977 986-115-8271</a></span>
+      <span>📍 Panauti, Kavre, Nepal</span>
+      <span>🌐 <a href="https://amirlearner.me" target="_blank">amirlearner.me</a></span>
+      <span>💼 <a href="https://github.com/amirsteam" target="_blank">github.com/amirsteam</a></span>
+    </div>
+  </header>
+
+  <!-- Professional Summary -->
+  <section class="section">
+    <h2 class="section-title">Professional Summary</h2>
+    <p class="summary">
+      Passionate MERN Stack Developer with extensive experience building scalable, production-ready web applications.
+      Expertise spans the entire JavaScript ecosystem—from crafting intuitive React frontends to architecting robust
+      Node.js backends with MongoDB databases. Deeply committed to education and mentorship, having trained 100+
+      developers through hands-on, project-based learning. Unique combination of technical engineering skills and
+      creative design capabilities with proficiency in Adobe Creative Suite.
+    </p>
+  </section>
+
+  <!-- Skills -->
+  <section class="section">
+    <h2 class="section-title">Technical Skills</h2>
+    <div class="skills-grid">
+      <div class="skill-category">
+        <h3 class="skill-category-title">MERN Stack Development</h3>
+        <p class="skill-list">
+          React.js, Node.js, Express.js, MongoDB, Redux, REST APIs, JWT Authentication,
+          Mongoose, Next.js, TypeScript
+        </p>
+      </div>
+      <div class="skill-category">
+        <h3 class="skill-category-title">Frontend & UI/UX</h3>
+        <p class="skill-list">
+          Tailwind CSS, Material UI, Framer Motion, Responsive Design,
+          Accessibility (a11y), CSS3, HTML5
+        </p>
+      </div>
+      <div class="skill-category">
+        <h3 class="skill-category-title">DevOps & Tools</h3>
+        <p class="skill-list">
+          Git, GitHub, Vercel, Railway, DigitalOcean, MongoDB Atlas,
+          VS Code, Postman, Linux
+        </p>
+      </div>
+      <div class="skill-category">
+        <h3 class="skill-category-title">Design & Creative</h3>
+        <p class="skill-list">
+          Adobe Photoshop, Illustrator, Premiere Pro, After Effects,
+          Motion Graphics, Video Editing
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Experience -->
+  <section class="section">
+    <h2 class="section-title">Professional Experience</h2>
+
+    <div class="item">
+      <div class="item-header">
+        <h3 class="item-title">Freelance MERN Stack Developer</h3>
+        <span class="item-period">2022 - Present</span>
+      </div>
+      <p class="item-subtitle">Self-employed | Remote</p>
+      <ul class="achievements">
+        <li>Delivered 20+ successful production-grade web applications for international clients</li>
+        <li>Specialized in e-commerce platforms, CMS systems, and educational portals</li>
+        <li>Maintained 100% client satisfaction rate with on-time project delivery</li>
+        <li>Implemented scalable MERN architecture with secure authentication systems</li>
+      </ul>
+    </div>
+
+    <div class="item">
+      <div class="item-header">
+        <h3 class="item-title">Web Development Instructor</h3>
+        <span class="item-period">2021 - Present</span>
+      </div>
+      <p class="item-subtitle">Local Tech Institute | Panauti, Nepal</p>
+      <ul class="achievements">
+        <li>Trained 100+ students in MERN stack development through project-based curriculum</li>
+        <li>Developed comprehensive full-stack development course materials</li>
+        <li>Mentored students who successfully secured jobs at tech companies</li>
+        <li>Created hands-on learning modules focused on industry best practices</li>
+      </ul>
+    </div>
+
+    <div class="item">
+      <div class="item-header">
+        <h3 class="item-title">IT Consultant</h3>
+        <span class="item-period">2020 - Present</span>
+      </div>
+      <p class="item-subtitle">Various Schools & Institutions | Kavre District, Nepal</p>
+      <ul class="achievements">
+        <li>Digitized operations for 10+ educational institutions</li>
+        <li>Implemented Google Workspace solutions for 5000+ users</li>
+        <li>Developed custom school management systems and web applications</li>
+        <li>Provided digital transformation consulting and training</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Key Projects -->
+  <section class="section">
+    <h2 class="section-title">Key Projects</h2>
+
+    <div class="project">
+      <h3 class="project-title">News Portal System</h3>
+      <p class="project-tech">React, Node.js, Express, MongoDB, Redux, Tailwind CSS</p>
+      <p class="project-description">
+        Comprehensive news publishing platform with real-time updates, role-based access control,
+        powerful admin dashboard, and SEO optimization for high traffic performance.
+      </p>
+    </div>
+
+    <div class="project">
+      <h3 class="project-title">E-Commerce Platform</h3>
+      <p class="project-tech">React, Node.js, Express, MongoDB, Stripe, Redux</p>
+      <p class="project-description">
+        Full-featured online store with secure payment integration, inventory management,
+        order tracking, and comprehensive admin dashboard for business operations.
+      </p>
+    </div>
+
+    <div class="project">
+      <h3 class="project-title">School Management System</h3>
+      <p class="project-tech">React, Node.js, MongoDB, Express, Material UI</p>
+      <p class="project-description">
+        Complete school administration solution with student management, attendance tracking,
+        grade management, and parent communication portal.
+      </p>
+    </div>
+  </section>
+
+  <!-- Education -->
+  <section class="section">
+    <h2 class="section-title">Education</h2>
+
+    <div class="item">
+      <div class="item-header">
+        <h3 class="item-title">MPhil in STEAM Education (Running)</h3>
+        <span class="item-period">2019 - 2025 (Expected)</span>
+      </div>
+      <p class="item-subtitle">Kathmandu University | Dhulikhel, Nepal</p>
+      <p class="item-description">Focused on software engineering, educational technology, and modern teaching methodologies.</p>
+    </div>
+
+    <div class="item">
+      <div class="item-header">
+        <h3 class="item-title">Self-taught MERN Stack Development</h3>
+        <span class="item-period">2020 - Present</span>
+      </div>
+      <p class="item-subtitle">Online Learning & Practice | Remote</p>
+      <p class="item-description">Intensive self-study through Udemy, freeCodeCamp, and extensive real-world project experience.</p>
+    </div>
+  </section>
+
+  <!-- Languages -->
+  <section class="section">
+    <h2 class="section-title">Languages</h2>
+    <p class="summary">
+      <strong>Nepali:</strong> Native &nbsp;|&nbsp;
+      <strong>English:</strong> Professional Proficiency &nbsp;|&nbsp;
+      <strong>Hindi:</strong> Conversational
+    </p>
+  </section>
+
+  <!-- Print Button -->
+  <button class="print-btn no-print" onclick="window.print()">
+    📄 Download PDF
+  </button>
+</body>
+</html>
+

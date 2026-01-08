@@ -131,12 +131,13 @@ export default function About() {
                 <motion.a
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  href="/resume.pdf"
-                  download
+                  href="/resume.html"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold hover:shadow-lg hover:shadow-blue-500/25 transition-shadow"
                 >
                   <Download size={20} />
-                  Download Resume
+                  View Resume
                 </motion.a>
                 <motion.a
                   whileHover={{ scale: 1.05 }}
