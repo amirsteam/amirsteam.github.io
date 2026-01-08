@@ -52,12 +52,12 @@ export default function Navbar() {
     <header
       className={cn(
         'fixed top-9 md:top-10 left-0 right-0 z-50 transition-all duration-300',
-        scrolled
-          ? 'bg-[var(--bg-primary)]/90 backdrop-blur-lg shadow-lg border-b border-[var(--border-color)]'
-          : 'bg-transparent'
+        scrolled || isOpen
+          ? 'bg-[var(--bg-primary)] backdrop-blur-lg shadow-lg border-b border-[var(--border-color)]'
+          : 'bg-[var(--bg-primary)]/80 backdrop-blur-md md:bg-transparent md:backdrop-blur-none'
       )}
     >
-      <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <nav className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2 group">
@@ -161,10 +161,10 @@ export default function Navbar() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3 }}
-              className="md:hidden overflow-hidden"
+              transition={{ duration: 0.2 }}
+              className="md:hidden overflow-hidden absolute top-full left-0 right-0 bg-[var(--bg-primary)] border-b border-[var(--border-color)] shadow-lg"
             >
-              <div className="py-4 space-y-2">
+              <div className="py-4 space-y-2 px-4">
                 {navLinks.map((link, index) => (
                   <motion.a
                     key={link.name}
@@ -172,7 +172,7 @@ export default function Navbar() {
                     onClick={(e) => handleNavClick(e, link.path)}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.05 }}
+                    transition={{ delay: index * 0.03 }}
                     className={cn(
                       'block px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200',
                       'hover:bg-[var(--bg-secondary)] hover:text-[var(--accent-primary)]',
@@ -187,7 +187,7 @@ export default function Navbar() {
                 <motion.a
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: navLinks.length * 0.05 }}
+                  transition={{ delay: navLinks.length * 0.03 }}
                   href="/resume.html"
                   target="_blank"
                   rel="noopener noreferrer"
