@@ -5,6 +5,8 @@ import { api } from '../../lib/api'
 import { testimonials as staticTestimonials } from '../../data'
 import { normalizeTestimonialArray } from '../../utils/normalizers'
 
+// Testimonials section component with defensive data handling
+// Last updated: 2026-01-08
 export default function Testimonials() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
