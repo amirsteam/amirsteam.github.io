@@ -3,17 +3,28 @@ import { useRef, useState, useEffect } from 'react'
 import { Briefcase, GraduationCap, MapPin, Calendar } from 'lucide-react'
 import { api } from '../../lib/api'
 import { experience as staticExperience, education } from '../../data'
+import { normalizeExperienceArray } from '../../utils/normalizers'
 
 export default function Experience() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
-  const [experience, setExperience] = useState(staticExperience)
+  // Normalize static data on init to ensure consistent shape
+  const [experience, setExperience] = useState(() => normalizeExperienceArray(staticExperience))
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     async function fetchExperience() {
-      const response = await api.getExperience()
-      if (response?.success && response.data?.length > 0) {
-        setExperience(response.data)
+      try {
+        const response = await api.getExperience()
+        if (response?.success && Array.isArray(response.data) && response.data.length > 0) {
+          setExperience(response.data)
+        }
+        // If API fails or returns empty, keep static data (already normalized)
+      } catch (error) {
+        // Silently fail - static data remains
+        console.warn('Experience fetch failed, using static data:', error)
+      } finally {
+        setIsLoading(false)
       }
     }
     fetchExperience()
@@ -38,6 +49,10 @@ export default function Experience() {
     }
   }
 
+  // Safe array for rendering - defensive check
+  const safeExperience = Array.isArray(experience) ? experience : []
+  const safeEducation = Array.isArray(education) ? education : []
+
   return (
     <section id="experience" className="py-20 bg-[var(--bg-secondary)]">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -48,7 +63,7 @@ export default function Experience() {
           animate={isInView ? 'visible' : 'hidden'}
           className="max-w-6xl mx-auto"
         >
-          {/* Section Header */}
+          {/* Section Header - unchanged */}
           <motion.div variants={itemVariants} className="text-center mb-16">
             <span className="text-sm font-semibold text-[var(--accent-primary)] uppercase tracking-wider">
               Career Path
@@ -76,11 +91,11 @@ export default function Experience() {
                 {/* Timeline Line */}
                 <div className="absolute left-5 top-0 bottom-0 w-0.5 bg-gradient-to-b from-blue-500 to-purple-600" />
 
-                {/* Timeline Items */}
+                {/* Timeline Items - with safe rendering */}
                 <div className="space-y-8">
-                  {experience.map((exp, index) => (
+                  {safeExperience.map((exp, index) => (
                     <motion.div
-                      key={exp.id}
+                      key={exp?.id || `exp-${index}`}
                       initial={{ opacity: 0, x: -20 }}
                       animate={isInView ? { opacity: 1, x: 0 } : {}}
                       transition={{ delay: index * 0.1 }}
@@ -93,25 +108,35 @@ export default function Experience() {
                         <div className="flex flex-wrap items-center gap-2 text-sm text-[var(--text-muted)] mb-2">
                           <span className="flex items-center gap-1">
                             <Calendar size={14} />
-                            {exp.period}
+                            {exp?.period || 'Present'}
                           </span>
                           <span className="flex items-center gap-1">
                             <MapPin size={14} />
-                            {exp.location}
+                            {exp?.location || 'Remote'}
                           </span>
                         </div>
 
-                        <h4 className="text-lg font-bold text-[var(--text-primary)]">{exp.title}</h4>
-                        <p className="text-[var(--accent-primary)] font-medium">{exp.company}</p>
+                        <h4 className="text-lg font-bold text-[var(--text-primary)]">
+                          {exp?.title || 'Position'}
+                        </h4>
+                        <p className="text-[var(--accent-primary)] font-medium">
+                          {exp?.company || 'Company'}
+                        </p>
 
-                        <p className="mt-3 text-sm text-[var(--text-secondary)]">{exp.description}</p>
+                        <p className="mt-3 text-sm text-[var(--text-secondary)]">
+                          {exp?.description || ''}
+                        </p>
 
-                        {exp.achievements && (
+                        {/* Safe achievements rendering */}
+                        {Array.isArray(exp?.achievements) && exp.achievements.length > 0 && (
                           <ul className="mt-4 space-y-2">
                             {exp.achievements.map((achievement, i) => (
-                              <li key={i} className="flex items-start gap-2 text-sm text-[var(--text-muted)]">
+                              <li
+                                key={`${exp.id}-achievement-${i}`}
+                                className="flex items-start gap-2 text-sm text-[var(--text-muted)]"
+                              >
                                 <span className="text-[var(--accent-primary)] mt-1">•</span>
-                                {achievement}
+                                {typeof achievement === 'string' ? achievement : String(achievement)}
                               </li>
                             ))}
                           </ul>
@@ -123,7 +148,7 @@ export default function Experience() {
               </div>
             </motion.div>
 
-            {/* Education */}
+            {/* Education - with safe rendering */}
             <motion.div variants={itemVariants}>
               <div className="flex items-center gap-3 mb-8">
                 <div className="p-3 rounded-xl bg-gradient-to-r from-green-500 to-emerald-500">
@@ -138,9 +163,9 @@ export default function Experience() {
 
                 {/* Timeline Items */}
                 <div className="space-y-8">
-                  {education.map((edu, index) => (
+                  {safeEducation.map((edu, index) => (
                     <motion.div
-                      key={edu.id}
+                      key={edu?.id || `edu-${index}`}
                       initial={{ opacity: 0, x: -20 }}
                       animate={isInView ? { opacity: 1, x: 0 } : {}}
                       transition={{ delay: index * 0.1 }}
@@ -153,25 +178,31 @@ export default function Experience() {
                         <div className="flex flex-wrap items-center gap-2 text-sm text-[var(--text-muted)] mb-2">
                           <span className="flex items-center gap-1">
                             <Calendar size={14} />
-                            {edu.period}
+                            {edu?.period || ''}
                           </span>
                           <span className="flex items-center gap-1">
                             <MapPin size={14} />
-                            {edu.location}
+                            {edu?.location || ''}
                           </span>
                         </div>
 
-                        <h4 className="text-lg font-bold text-[var(--text-primary)]">{edu.degree}</h4>
-                        <p className="text-green-500 font-medium">{edu.institution}</p>
+                        <h4 className="text-lg font-bold text-[var(--text-primary)]">
+                          {edu?.degree || 'Degree'}
+                        </h4>
+                        <p className="text-green-500 font-medium">
+                          {edu?.institution || 'Institution'}
+                        </p>
 
-                        <p className="mt-3 text-sm text-[var(--text-secondary)]">{edu.description}</p>
+                        <p className="mt-3 text-sm text-[var(--text-secondary)]">
+                          {edu?.description || ''}
+                        </p>
                       </div>
                     </motion.div>
                   ))}
                 </div>
               </div>
 
-              {/* Certifications */}
+              {/* Certifications - unchanged */}
               <div className="mt-12">
                 <h4 className="text-lg font-bold text-[var(--text-primary)] mb-4">Continuous Learning</h4>
                 <div className="flex flex-wrap gap-3">

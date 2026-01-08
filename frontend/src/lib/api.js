@@ -1,57 +1,153 @@
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api'
+import {
+  normalizeExperienceArray,
+  normalizeServiceArray,
+  normalizeProjectArray,
+  normalizeBlogArray,
+  normalizeSkillArray,
+  normalizeTestimonialArray,
+  normalizeBlog
+} from '../utils/normalizers'
 
-// Helper function for API calls
-async function fetchAPI(endpoint) {
+const API_URL = import.meta.env.VITE_API_URL || 'https://your-backend.railway.app/api'
+
+/**
+ * Safe fetch wrapper - never throws, always returns consistent shape
+ */
+async function safeFetch(endpoint, options = {}) {
   try {
-    const response = await fetch(`${API_URL}${endpoint}`)
+    const response = await fetch(`${API_URL}${endpoint}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+      },
+      ...options
+    })
+
     if (!response.ok) {
-      throw new Error(`API error: ${response.status}`)
+      console.warn(`API ${endpoint} returned ${response.status}`)
+      return { success: false, data: null, error: `HTTP ${response.status}` }
     }
-    return await response.json()
+
+    const json = await response.json()
+
+    // Handle various backend response shapes
+    const data = json.data || json.results || json.items || json
+
+    return { success: true, data, error: null }
   } catch (error) {
-    console.error(`Error fetching ${endpoint}:`, error)
-    return null
+    console.warn(`API ${endpoint} failed:`, error.message)
+    return { success: false, data: null, error: error.message }
   }
 }
 
-// Public API endpoints
 export const api = {
-  // Projects
-  getProjects: () => fetchAPI('/projects'),
-  getProject: (slug) => fetchAPI(`/projects/${slug}`),
-
-  // Blogs
-  getBlogs: () => fetchAPI('/blogs'),
-  getBlog: (slug) => fetchAPI(`/blogs/${slug}`),
-
-  // Skills
-  getSkills: () => fetchAPI('/skills'),
-
-  // Services
-  getServices: () => fetchAPI('/services'),
-
-  // Experience
-  getExperience: () => fetchAPI('/experience'),
-
-  // Testimonials
-  getTestimonials: () => fetchAPI('/testimonials'),
-
-  // Contact form
-  submitContact: async (data) => {
-    try {
-      const response = await fetch(`${API_URL}/contact`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      })
-      return await response.json()
-    } catch (error) {
-      console.error('Error submitting contact:', error)
-      return { success: false, message: 'Failed to submit form' }
+  /**
+   * Fetch experience entries - returns normalized, UI-safe array
+   */
+  async getExperience() {
+    const result = await safeFetch('/experience')
+    if (result.success && result.data) {
+      return {
+        ...result,
+        data: normalizeExperienceArray(result.data)
+      }
     }
+    return result
   },
+
+  /**
+   * Fetch services - returns normalized, UI-safe array
+   */
+  async getServices() {
+    const result = await safeFetch('/services')
+    if (result.success && result.data) {
+      return {
+        ...result,
+        data: normalizeServiceArray(result.data)
+      }
+    }
+    return result
+  },
+
+  /**
+   * Fetch projects - returns normalized, UI-safe array
+   */
+  async getProjects() {
+    const result = await safeFetch('/projects')
+    if (result.success && result.data) {
+      return {
+        ...result,
+        data: normalizeProjectArray(result.data)
+      }
+    }
+    return result
+  },
+
+  /**
+   * Fetch blog posts - returns normalized, UI-safe array
+   */
+  async getBlogs() {
+    const result = await safeFetch('/blogs')
+    if (result.success && result.data) {
+      return {
+        ...result,
+        data: normalizeBlogArray(result.data)
+      }
+    }
+    return result
+  },
+
+  /**
+   * Fetch single blog by slug
+   */
+  async getBlogBySlug(slug) {
+    const result = await safeFetch(`/blogs/${slug}`)
+    if (result.success && result.data) {
+      return {
+        ...result,
+        data: normalizeBlog(result.data)
+      }
+    }
+    return result
+  },
+
+  /**
+   * Fetch skills - returns normalized, UI-safe array
+   */
+  async getSkills() {
+    const result = await safeFetch('/skills')
+    if (result.success && result.data) {
+      return {
+        ...result,
+        data: normalizeSkillArray(result.data)
+      }
+    }
+    return result
+  },
+
+  /**
+   * Fetch testimonials - returns normalized, UI-safe array
+   */
+  async getTestimonials() {
+    const result = await safeFetch('/testimonials')
+    if (result.success && result.data) {
+      return {
+        ...result,
+        data: normalizeTestimonialArray(result.data)
+      }
+    }
+    return result
+  },
+
+  /**
+   * Submit contact form
+   */
+  async submitContact(formData) {
+    return safeFetch('/contact', {
+      method: 'POST',
+      body: JSON.stringify(formData)
+    })
+  }
 }
 
 export default api
