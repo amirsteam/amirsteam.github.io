@@ -10,6 +10,46 @@ import {
 
 const API_URL = import.meta.env.VITE_API_URL || 'https://your-backend.railway.app/api'
 
+// Public Web3Forms access key (safe to ship in the browser; it only allows
+// sending email to the address it was created for)
+const WEB3FORMS_KEY = import.meta.env.VITE_WEB3FORMS_KEY || ''
+
+const SUBJECT_LABELS = {
+  project: 'Project Inquiry',
+  consultation: 'Consultation',
+  teaching: 'Teaching/Mentoring',
+  job: 'Job Opportunity',
+  other: 'Other'
+}
+
+async function sendViaWeb3Forms({ name, email, phone, subject, message }) {
+  try {
+    const response = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({
+        access_key: WEB3FORMS_KEY,
+        subject: `[Portfolio] ${SUBJECT_LABELS[subject] || 'Message'} from ${name}`,
+        from_name: 'amirlearner.me',
+        name,
+        email,
+        phone: phone || '-',
+        topic: SUBJECT_LABELS[subject] || subject,
+        message
+      })
+    })
+    const json = await response.json().catch(() => ({}))
+    if (response.ok && json.success) {
+      return { success: true, data: json, error: null }
+    }
+    console.warn('Web3Forms rejected the message:', json.message || response.status)
+    return { success: false, data: null, error: json.message || `HTTP ${response.status}` }
+  } catch (error) {
+    console.warn('Web3Forms request failed:', error.message)
+    return { success: false, data: null, error: error.message }
+  }
+}
+
 /**
  * Safe fetch wrapper - never throws, always returns consistent shape
  */
@@ -140,9 +180,14 @@ export const api = {
   },
 
   /**
-   * Submit contact form
+   * Submit contact form.
+   * With VITE_WEB3FORMS_KEY set, messages go straight to your email through
+   * Web3Forms (no backend needed). Without it, they go to the Express API.
    */
   async submitContact(formData) {
+    if (WEB3FORMS_KEY) {
+      return sendViaWeb3Forms(formData)
+    }
     return safeFetch('/contact', {
       method: 'POST',
       body: JSON.stringify(formData)

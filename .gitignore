@@ -1,0 +1,21 @@
+# Editors
+.idea/
+.vscode/
+*.swp
+
+# Local environment files (commit only the .env.example files)
+.env
+.env.*
+!.env.example
+!.env.production
+
+# Dependencies and builds
+node_modules/
+dist/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Local command output
+*.log

@@ -6,10 +6,15 @@ This guide covers deploying the MERN Portfolio Platform to production.
 
 | Component | Platform | URL |
 |-----------|----------|-----|
-| Frontend | Vercel | https://amirlearner.me |
-| Backend | DigitalOcean/Railway | https://api.amirlearner.me |
+| Frontend | GitHub Pages (via GitHub Actions) | https://www.amirlearner.me |
+| Backend | Railway | https://amirsteamgithubio-production.up.railway.app/api |
 | Database | MongoDB Atlas | - |
 | Admin | Vercel | https://admin.amirlearner.me |
+| Contact form | Web3Forms (emails you directly) | - |
+
+The public site works without the backend: if the API can't be reached, it shows the
+content in `frontend/src/data/index.js`. The contact form uses Web3Forms when
+`VITE_WEB3FORMS_KEY` is set, and the backend's `/api/contact` otherwise.
 
 ## 🗄️ Step 1: MongoDB Atlas Setup
 
@@ -154,24 +159,37 @@ sudo apt install certbot python3-certbot-nginx
 sudo certbot --nginx -d api.amirlearner.me
 ```
 
-## 🌐 Step 3: Frontend Deployment (Vercel)
+## 🌐 Step 3: Frontend Deployment (GitHub Pages)
 
-1. Go to https://vercel.com
-2. Import your GitHub repository
-3. Set the root directory to `frontend`
-4. Add environment variable:
+The frontend deploys automatically on every push to `main` that changes `frontend/`,
+using `.github/workflows/deploy-frontend.yml`. It can also be run by hand from the
+repository's **Actions** tab.
+
+1. In the repository on GitHub, open **Settings → Pages** and set **Source** to
+   **GitHub Actions**.
+2. Set the build variables in `.github/workflows/deploy-frontend.yml`:
+   ```yaml
+   env:
+     VITE_API_URL: https://amirsteamgithubio-production.up.railway.app/api
+     VITE_WEB3FORMS_KEY: <your Web3Forms access key>
    ```
-   VITE_API_URL=https://api.amirlearner.me/api
-   ```
-5. Deploy!
+   Both values are public (they end up in the browser), so they can live in the workflow.
+3. The build copies `index.html` to `404.html` so deep links work on GitHub Pages.
 
 ### Custom Domain Setup
 
-1. In Vercel dashboard, go to your project settings
-2. Add custom domain: `amirlearner.me`
-3. Update your domain DNS:
-   - Add CNAME record pointing to `cname.vercel-dns.com`
-   - Or use Vercel nameservers
+1. The domain is set by the `CNAME` file at the repository root (`www.amirlearner.me`).
+2. At your DNS provider, point `www` with a CNAME record to `amirsteam.github.io`.
+3. In **Settings → Pages**, turn on **Enforce HTTPS**.
+
+### Local development
+
+```bash
+cd frontend
+cp .env.example .env   # then fill in the values
+npm install
+npm run dev
+```
 
 ## 🛡️ Step 4: Admin Dashboard Deployment (Vercel)
 
@@ -196,28 +214,13 @@ sudo certbot --nginx -d api.amirlearner.me
 
 ## 🔄 CI/CD Setup (GitHub Actions)
 
-Create `.github/workflows/deploy.yml`:
-
-```yaml
-name: Deploy
-
-on:
-  push:
-    branches: [main]
-
-jobs:
-  deploy-frontend:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Deploy to Vercel
-        uses: amondnet/vercel-action@v25
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          working-directory: ./frontend
-```
+- **Frontend:** `.github/workflows/deploy-frontend.yml` builds `frontend/` and publishes it
+  to GitHub Pages (see Step 3). Keep this as the only Pages workflow; two workflows
+  deploying at once race each other.
+- **Admin:** Vercel builds `admin/` on every push (settings in `admin/vercel.json`,
+  API URL in `admin/.env.production`).
+- **Backend:** Railway redeploys when `backend/` changes (settings in
+  `backend/railway.json`).
 
 ## 📊 Monitoring & Analytics
 
