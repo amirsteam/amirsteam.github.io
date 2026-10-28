@@ -1,4 +1,4 @@
-import { Helmet } from 'react-helmet-async'
+import { usePageMeta } from '../hooks/usePageMeta'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { Calendar, Clock, Tag, ArrowRight, Search } from 'lucide-react'
@@ -7,6 +7,12 @@ import { blogPosts, personalInfo } from '../data'
 import { formatDate } from '../utils/dateUtils'
 
 export default function BlogPage() {
+  usePageMeta({
+    title: `Blog | ${personalInfo.name}`,
+    description: 'Articles about MERN stack development and best practices.',
+    path: '/blog'
+  })
+
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('All')
 
@@ -22,10 +28,6 @@ export default function BlogPage() {
 
   return (
     <>
-      <Helmet>
-        <title>Blog | {personalInfo.name}</title>
-        <meta name="description" content="Articles and insights about MERN stack development, best practices, and industry insights." />
-      </Helmet>
 
       <div className="py-20 bg-[var(--bg-primary)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">

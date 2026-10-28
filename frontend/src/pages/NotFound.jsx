@@ -1,15 +1,12 @@
-import { Helmet } from 'react-helmet-async'
+import { usePageMeta } from '../hooks/usePageMeta'
 import { Link } from 'react-router-dom'
 import { personalInfo } from '../data'
 
 export default function NotFound() {
+  usePageMeta({ title: `Page not found | ${personalInfo.name}`, noindex: true })
+
   return (
     <>
-      <Helmet>
-        <title>Page not found | {personalInfo.name}</title>
-        <meta name="robots" content="noindex" />
-      </Helmet>
-
       <section className="min-h-[60vh] flex items-center justify-center px-4 py-20">
         <div className="max-w-md text-center">
           <p className="text-sm font-semibold text-[var(--accent-primary)] uppercase tracking-wider">404</p>
