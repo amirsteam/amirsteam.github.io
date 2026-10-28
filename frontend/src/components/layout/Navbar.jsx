@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, Sun, Moon, Download, ChevronDown } from 'lucide-react'
+import { Menu, X, Sun, Moon, Download, ChevronDown, Phone, MessageCircle } from 'lucide-react'
 import { useTheme } from '../../context/ThemeContext'
 import { navLinks, personalInfo } from '../../data'
 import { cn } from '../../utils/helpers'
@@ -51,7 +51,7 @@ export default function Navbar() {
   return (
     <header
       className={cn(
-        'fixed top-9 md:top-10 left-0 right-0 z-50 transition-all duration-300',
+        'fixed top-0 md:top-10 left-0 right-0 z-50 transition-all duration-300',
         scrolled || isOpen
           ? 'bg-[var(--bg-primary)] backdrop-blur-lg shadow-lg border-b border-[var(--border-color)]'
           : 'bg-[var(--bg-primary)]/80 backdrop-blur-md md:bg-transparent md:backdrop-blur-none'
@@ -196,6 +196,26 @@ export default function Navbar() {
                   <Download size={16} />
                   <span>View Resume</span>
                 </motion.a>
+
+                {/* Quick contact (the top contact banner is hidden on phones) */}
+                <div className="grid grid-cols-2 gap-2 pt-2">
+                  <a
+                    href={`https://wa.me/${personalInfo.phone.replace(/\D/g, '')}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-2 px-4 py-3 rounded-lg border border-[var(--border-color)] text-[var(--text-primary)] font-medium text-sm"
+                  >
+                    <MessageCircle size={16} aria-hidden="true" />
+                    WhatsApp
+                  </a>
+                  <a
+                    href={`tel:${personalInfo.phone.replace(/\s/g, '')}`}
+                    className="flex items-center justify-center gap-2 px-4 py-3 rounded-lg border border-[var(--border-color)] text-[var(--text-primary)] font-medium text-sm"
+                  >
+                    <Phone size={16} aria-hidden="true" />
+                    Call
+                  </a>
+                </div>
               </div>
             </motion.div>
           )}

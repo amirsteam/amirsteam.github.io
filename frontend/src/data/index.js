@@ -33,6 +33,7 @@ export const skills = {
     icon: 'Code2',
     color: 'from-blue-500 to-cyan-500',
     description: 'Full-stack JavaScript development with modern best practices',
+    usedIn: ['Nevan Handicraft Store', 'Learning MERN with Amir', 'Academic Workload Platform', 'Cinema Booking API'],
     items: [
       { name: 'Full MERN Architecture', level: 95 },
       { name: 'Secure Authentication (JWT)', level: 92 },
@@ -49,6 +50,7 @@ export const skills = {
     icon: 'Palette',
     color: 'from-purple-500 to-pink-500',
     description: 'Beautiful, responsive, and accessible user interfaces',
+    usedIn: ['Nevan Handicraft Store', 'HamroNepal News Portal'],
     items: [
       { name: 'Tailwind CSS', level: 95 },
       { name: 'Material UI (MUI)', level: 90 },
@@ -77,6 +79,7 @@ export const skills = {
     icon: 'GraduationCap',
     color: 'from-green-500 to-emerald-500',
     description: 'Empowering developers and institutions with knowledge',
+    usedIn: ['Learning MERN with Amir', 'Academic Workload Platform'],
     items: [
       { name: 'MERN Teaching & Mentorship', level: 92 },
       { name: 'Project-based Learning', level: 95 },
@@ -355,10 +358,10 @@ export const blogPosts = [
 
 export const navLinks = [
   { name: 'Home', path: '/' },
-  { name: 'About', path: '/#about' },
-  { name: 'Skills', path: '/#skills' },
   { name: 'Projects', path: '/#projects' },
   { name: 'Services', path: '/#services' },
+  { name: 'About', path: '/#about' },
+  { name: 'Skills', path: '/#skills' },
   // Blog is hidden until there are real posts; add { name: 'Blog', path: '/blog' } back then
   { name: 'Contact', path: '/contact' }
 ]

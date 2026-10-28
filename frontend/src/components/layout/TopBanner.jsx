@@ -75,7 +75,7 @@ export default function TopBanner() {
       transition={{ duration: 0.3, ease: 'easeOut' }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="fixed top-0 left-0 right-0 z-[60] bg-gradient-to-r from-slate-900 via-purple-900 to-slate-900 border-b border-purple-500/20"
+      className="hidden md:block fixed top-0 left-0 right-0 z-[60] bg-gradient-to-r from-slate-900 via-purple-900 to-slate-900 border-b border-purple-500/20"
     >
       {/* Animated background shimmer */}
       <motion.div

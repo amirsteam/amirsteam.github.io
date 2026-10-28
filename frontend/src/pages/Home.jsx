@@ -17,11 +17,12 @@ export default function Home() {
         <meta name="description" content={personalInfo.tagline} />
       </Helmet>
       
+      {/* Work first: visitors see proof before the bio. Backgrounds alternate in this order. */}
       <Hero />
-      <About />
-      <Skills />
       <Projects />
       <Services />
+      <About />
+      <Skills />
       <Experience />
       <Testimonials />
       {/* Blog section hidden until there are real posts (components/sections/Blog.jsx) */}

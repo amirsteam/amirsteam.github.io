@@ -89,24 +89,17 @@ export default function Hero() {
             <span className="text-sm text-[var(--text-secondary)]">Available for Freelance & Remote Work</span>
           </motion.div>
 
-          {/* Name */}
-          <motion.h1 variants={itemVariants} className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4">
-            <span className="text-[var(--text-primary)]">Hi, I'm </span>
-            <span className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
-              {personalInfo.name.split(' ')[0]}
-            </span>
+          {/* Headline: what I build and for whom */}
+          <motion.h1 variants={itemVariants} className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-[var(--text-primary)] mb-6 text-balance">
+            I build web apps that{' '}
+            <span className="text-[var(--accent-primary)]">businesses and schools</span>{' '}
+            run on.
           </motion.h1>
 
-          {/* Title */}
-          <motion.div variants={itemVariants} className="mb-6">
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-[var(--text-primary)]">
-              {personalInfo.title}
-            </h2>
-          </motion.div>
-
-          {/* Tagline */}
+          {/* Who I am + proof */}
           <motion.p variants={itemVariants} className="text-lg md:text-xl text-[var(--text-secondary)] max-w-2xl mx-auto mb-8">
-            {personalInfo.tagline}
+            I'm {personalInfo.name}, a MERN stack developer and educator from Nepal.
+            Recent work: a live online store with eSewa and Khalti payments, and my own MERN course platform.
           </motion.p>
 
           {/* Location */}
@@ -128,7 +121,7 @@ export default function Hero() {
               href="#projects"
               className="px-8 py-4 rounded-xl bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold text-lg shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30 transition-shadow"
             >
-              View My Work
+              See my projects
             </motion.a>
             <motion.a
               whileHover={{ scale: 1.05 }}
@@ -136,7 +129,7 @@ export default function Hero() {
               href="#contact"
               className="px-8 py-4 rounded-xl bg-[var(--bg-secondary)] border-2 border-[var(--border-color)] text-[var(--text-primary)] font-semibold text-lg hover:border-[var(--accent-primary)] transition-colors"
             >
-              Get in Touch
+              Get in touch
             </motion.a>
           </motion.div>
 
@@ -173,10 +166,10 @@ export default function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.5 }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2"
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 hidden md:block"
         >
           <motion.a
-            href="#about"
+            href="#projects"
             variants={floatingVariants}
             animate="animate"
             className="flex flex-col items-center gap-2 text-[var(--text-muted)] hover:text-[var(--accent-primary)] transition-colors"

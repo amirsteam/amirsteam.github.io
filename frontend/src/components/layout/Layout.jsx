@@ -14,7 +14,7 @@ export default function Layout() {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.3 }}
-        className="flex-grow pt-24 md:pt-28"
+        className="flex-grow pt-16 md:pt-28"
       >
         <Outlet />
       </motion.main>

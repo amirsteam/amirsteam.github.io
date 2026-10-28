@@ -185,56 +185,43 @@ export default function Skills() {
                 )}
               </div>
 
-              {/* Right - Skills List */}
-              <div className="space-y-4">
-                {(Array.isArray(activeSkill?.items) ? activeSkill.items : []).map((skill, skillIndex) => (
-                  <div key={skill?.name || `skill-${skillIndex}`}>
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="font-medium text-[var(--text-primary)]">{skill?.name || 'Skill'}</span>
-                      <span className="text-sm text-[var(--text-muted)]">{skill?.level || 0}%</span>
-                    </div>
-                    <div className="h-2 bg-[var(--bg-tertiary)] rounded-full overflow-hidden">
-                      <motion.div
-                        initial={{ width: 0 }}
-                        animate={{ width: `${skill?.level || 0}%` }}
-                        transition={{ duration: 1, delay: 0.2 }}
-                        className={`h-full rounded-full bg-gradient-to-r ${activeSkill?.color || 'from-blue-500 to-cyan-500'}`}
-                      />
-                    </div>
-                  </div>
-                ))}
+              {/* Right - skills as plain tags (no self-rated percentages) and where they were used */}
+              <div>
+                <h4 className="text-sm font-semibold uppercase tracking-wider text-[var(--text-secondary)] mb-3">
+                  Tools &amp; skills
+                </h4>
+                <ul className="flex flex-wrap gap-2">
+                  {(Array.isArray(activeSkill?.items) ? activeSkill.items : []).map((skill, skillIndex) => (
+                    <li
+                      key={skill?.name || `skill-${skillIndex}`}
+                      className="px-3 py-1.5 rounded-lg bg-[var(--bg-primary)] border border-[var(--border-color)] text-sm text-[var(--text-primary)]"
+                    >
+                      {skill?.name || 'Skill'}
+                    </li>
+                  ))}
+                </ul>
+
+                {Array.isArray(activeSkill?.usedIn) && activeSkill.usedIn.length > 0 && (
+                  <>
+                    <h4 className="mt-8 text-sm font-semibold uppercase tracking-wider text-[var(--text-secondary)] mb-3">
+                      Used in
+                    </h4>
+                    <ul className="space-y-2">
+                      {activeSkill.usedIn.map((projectName) => (
+                        <li key={projectName}>
+                          <a
+                            href="#projects"
+                            className="text-[var(--accent-primary)] font-medium hover:underline"
+                          >
+                            {projectName}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </>
+                )}
               </div>
             </div>
-          </motion.div>
-
-          {/* All Skills Overview */}
-          <motion.div variants={itemVariants} className="mt-16 grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {categories.map((category, catIndex) => {
-              const IconComponent = iconMap[category?.icon] || Code2
-              const safeItems = Array.isArray(category?.items) ? category.items : []
-              return (
-                <div
-                  key={category?.key || `cat-${catIndex}`}
-                  className="p-6 rounded-2xl bg-[var(--bg-secondary)] border border-[var(--border-color)]"
-                >
-                  <div className={`inline-flex p-3 rounded-xl bg-gradient-to-r ${category?.color || 'from-blue-500 to-cyan-500'} mb-4`}>
-                    <IconComponent className="w-6 h-6 text-white" />
-                  </div>
-                  <h4 className="font-semibold text-[var(--text-primary)] mb-2">{category?.title || 'Skill'}</h4>
-                  <p className="text-sm text-[var(--text-muted)]">{category?.description || ''}</p>
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    {safeItems.slice(0, 3).map((skill, skillIndex) => (
-                      <span
-                        key={skill?.name || `skill-${catIndex}-${skillIndex}`}
-                        className="px-2 py-1 text-xs rounded bg-[var(--bg-tertiary)] text-[var(--text-muted)]"
-                      >
-                        {skill?.name || 'Skill'}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )
-            })}
           </motion.div>
         </motion.div>
       </div>
