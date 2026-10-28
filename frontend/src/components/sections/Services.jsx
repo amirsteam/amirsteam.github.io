@@ -124,7 +124,7 @@ export default function Services() {
                         <li key={`${service?.id || index}-feature-${i}`} className="flex items-start gap-3">
                           <div className={`flex-shrink-0 p-1 rounded-full ${
                             service?.popular
-                              ? 'bg-green-500/20 text-green-500'
+                              ? 'bg-green-500/20 text-green-700 dark:text-green-400'
                               : 'bg-[var(--bg-tertiary)] text-[var(--accent-primary)]'
                           }`}>
                             <Check size={14} />

@@ -189,7 +189,7 @@ export default function Experience() {
                         <h4 className="text-lg font-bold text-[var(--text-primary)]">
                           {edu?.degree || 'Degree'}
                         </h4>
-                        <p className="text-green-500 font-medium">
+                        <p className="text-green-700 dark:text-green-400 font-medium">
                           {edu?.institution || 'Institution'}
                         </p>
 

@@ -6,7 +6,6 @@ import Projects from '../components/sections/Projects'
 import Services from '../components/sections/Services'
 import Experience from '../components/sections/Experience'
 import Testimonials from '../components/sections/Testimonials'
-import Blog from '../components/sections/Blog'
 import Contact from '../components/sections/Contact'
 import { personalInfo } from '../data'
 
@@ -25,7 +24,7 @@ export default function Home() {
       <Services />
       <Experience />
       <Testimonials />
-      <Blog />
+      {/* Blog section hidden until there are real posts (components/sections/Blog.jsx) */}
       <Contact />
     </>
   )

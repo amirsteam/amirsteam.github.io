@@ -7,6 +7,7 @@ import {
   Send, 
   Clock, 
   CheckCircle,
+  AlertCircle,
   Loader2,
   Github,
   Linkedin,
@@ -14,6 +15,35 @@ import {
   Youtube
 } from 'lucide-react'
 import { personalInfo } from '../../data'
+import { api } from '../../lib/api'
+
+const SUBJECT_LABELS = {
+  project: 'Project Inquiry',
+  consultation: 'Consultation',
+  teaching: 'Teaching/Mentoring',
+  job: 'Job Opportunity',
+  other: 'Other'
+}
+
+// Builds a mailto link with the visitor's message already filled in,
+// so nothing is lost when the API can't be reached.
+function buildMailtoLink(data) {
+  const subject = `[Portfolio] ${SUBJECT_LABELS[data.subject] || 'Message'} from ${data.name}`
+  const body = [
+    data.message,
+    '',
+    `— ${data.name}`,
+    data.email,
+    data.phone
+  ].filter((line) => line !== undefined).join('\n')
+  return `mailto:${personalInfo.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+}
+
+function buildWhatsAppLink(data) {
+  const phone = personalInfo.phone.replace(/\D/g, '')
+  const text = `Hi Amir, I'm ${data.name} (${data.email}).\n\n${data.message}`
+  return `https://wa.me/${phone}?text=${encodeURIComponent(text)}`
+}
 
 export default function Contact() {
   const ref = useRef(null)
@@ -23,10 +53,13 @@ export default function Contact() {
     email: '',
     phone: '',
     subject: '',
-    message: ''
+    message: '',
+    website: '' // honeypot: hidden from people, bots tend to fill it
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState(null)
+  // Copy of what was sent, so the fallback links still work after an error
+  const [failedMessage, setFailedMessage] = useState(null)
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -56,19 +89,31 @@ export default function Contact() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    setIsSubmitting(true)
-    
-    // Simulate API call - in production this would call the backend
-    try {
-      await new Promise(resolve => setTimeout(resolve, 2000))
+    const { website, ...message } = formData
+    const emptyForm = { name: '', email: '', phone: '', subject: '', message: '', website: '' }
+
+    // Bot filled the hidden field: act as if it worked, send nothing
+    if (website) {
       setSubmitStatus('success')
-      setFormData({ name: '', email: '', phone: '', subject: '', message: '' })
-    } catch (error) {
-      setSubmitStatus('error')
-    } finally {
-      setIsSubmitting(false)
-      setTimeout(() => setSubmitStatus(null), 5000)
+      setFormData(emptyForm)
+      return
     }
+
+    setIsSubmitting(true)
+    setSubmitStatus(null)
+
+    const result = await api.submitContact(message)
+
+    if (result.success) {
+      setSubmitStatus('success')
+      setFailedMessage(null)
+      setFormData(emptyForm)
+    } else {
+      // Keep the form filled in and offer other ways to send it
+      setSubmitStatus('error')
+      setFailedMessage(message)
+    }
+    setIsSubmitting(false)
   }
 
   const socialLinks = [
@@ -257,6 +302,20 @@ export default function Contact() {
                     </select>
                   </div>
 
+                  {/* Honeypot: hidden from people and screen readers */}
+                  <div aria-hidden="true" className="absolute -left-[9999px] w-px h-px overflow-hidden">
+                    <label htmlFor="website">Website</label>
+                    <input
+                      type="text"
+                      id="website"
+                      name="website"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      value={formData.website}
+                      onChange={handleChange}
+                    />
+                  </div>
+
                   <div className="md:col-span-2">
                     <label htmlFor="message" className="block text-sm font-medium text-[var(--text-primary)] mb-2">
                       Message *
@@ -298,26 +357,52 @@ export default function Contact() {
                 </div>
 
                 {/* Status Messages */}
-                {submitStatus === 'success' && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="mt-4 flex items-center gap-2 p-4 rounded-xl bg-green-500/10 border border-green-500/20 text-green-600"
-                  >
-                    <CheckCircle size={20} />
-                    <span>Message sent successfully! I'll get back to you soon.</span>
-                  </motion.div>
-                )}
+                <div aria-live="polite">
+                  {submitStatus === 'success' && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="mt-4 flex items-center gap-2 p-4 rounded-xl bg-green-500/10 border border-green-500/20 text-green-700 dark:text-green-400"
+                    >
+                      <CheckCircle size={20} className="shrink-0" />
+                      <span>Message sent. I'll get back to you within 24 hours.</span>
+                    </motion.div>
+                  )}
 
-                {submitStatus === 'error' && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="mt-4 p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-600"
-                  >
-                    Something went wrong. Please try again or contact me directly via email.
-                  </motion.div>
-                )}
+                  {submitStatus === 'error' && failedMessage && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="mt-4 p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-700 dark:text-red-400"
+                    >
+                      <p className="flex items-center gap-2 font-medium">
+                        <AlertCircle size={20} className="shrink-0" />
+                        Your message couldn't be sent from here.
+                      </p>
+                      <p className="mt-1 text-sm">
+                        It's still filled in above. Send it with one click instead:
+                      </p>
+                      <div className="mt-3 flex flex-col sm:flex-row gap-2">
+                        <a
+                          href={buildMailtoLink(failedMessage)}
+                          className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-[var(--bg-secondary)] border border-[var(--border-color)] text-[var(--text-primary)] font-medium hover:border-[var(--accent-primary)] transition-colors"
+                        >
+                          <Mail size={16} />
+                          Send by email
+                        </a>
+                        <a
+                          href={buildWhatsAppLink(failedMessage)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-[var(--bg-secondary)] border border-[var(--border-color)] text-[var(--text-primary)] font-medium hover:border-[var(--accent-primary)] transition-colors"
+                        >
+                          <Phone size={16} />
+                          Send on WhatsApp
+                        </a>
+                      </div>
+                    </motion.div>
+                  )}
+                </div>
               </form>
             </motion.div>
           </div>

@@ -3,7 +3,7 @@ import { AnimatePresence } from 'framer-motion'
 import Layout from './components/layout/Layout'
 import Home from './pages/Home'
 import ContactPage from './pages/ContactPage'
-import BlogPage from './pages/BlogPage'
+import NotFound from './pages/NotFound'
 import ErrorBoundary from './components/ErrorBoundary'
 
 function App() {
@@ -14,7 +14,8 @@ function App() {
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
             <Route path="contact" element={<ContactPage />} />
-            <Route path="blog" element={<BlogPage />} />
+            {/* /blog is off until there are real posts (pages/BlogPage.jsx); old links land on the 404 page */}
+            <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
       </AnimatePresence>

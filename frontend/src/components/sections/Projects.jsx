@@ -1,15 +1,14 @@
 import { motion, useInView } from 'framer-motion'
 import { useRef, useState, useEffect } from 'react'
-import { ExternalLink, Github, Play, ChevronRight } from 'lucide-react'
+import { ExternalLink, Github, ChevronRight, Code2 } from 'lucide-react'
 import { api } from '../../lib/api'
-import { projects as staticProjects } from '../../data'
+import { projects as staticProjects, personalInfo } from '../../data'
 import { normalizeProjectArray } from '../../utils/normalizers'
 
 export default function Projects() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
   const [activeFilter, setActiveFilter] = useState('All')
-  const [hoveredProject, setHoveredProject] = useState(null)
   // Normalize static data on init
   const [projects, setProjects] = useState(() => normalizeProjectArray(staticProjects))
 
@@ -105,80 +104,36 @@ export default function Projects() {
                 key={project?.id || `project-${index}`}
                 layout
                 variants={itemVariants}
-                onMouseEnter={() => setHoveredProject(project?.id)}
-                onMouseLeave={() => setHoveredProject(null)}
-                className="group relative bg-[var(--bg-primary)] rounded-2xl overflow-hidden border border-[var(--border-color)] hover:border-[var(--accent-primary)] transition-all duration-300"
+                className="group relative flex flex-col bg-[var(--bg-primary)] rounded-2xl overflow-hidden border border-[var(--border-color)] hover:border-[var(--accent-primary)] transition-colors duration-300"
               >
-                {/* Thumbnail */}
-                <div className="relative aspect-video overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500/80 to-purple-600/80 flex items-center justify-center">
-                    <span className="text-6xl">
-                      {index === 0 && '📰'}
-                      {index === 1 && '🛒'}
-                      {index === 2 && '🏫'}
-                      {index === 3 && '🎓'}
-                      {index === 4 && '💼'}
-                      {index === 5 && '📊'}
-                      {index > 5 && '🚀'}
-                    </span>
-                  </div>
-                  
-                  {/* Overlay */}
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: hoveredProject === project?.id ? 1 : 0 }}
-                    className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent flex items-end justify-between p-4"
-                  >
-                    <div className="flex gap-2">
-                      {project?.liveUrl && (
-                      <motion.a
-                        href={project.liveUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.95 }}
-                        className="p-2 rounded-lg bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 transition-colors"
-                        aria-label="View live site"
-                      >
-                        <ExternalLink size={18} />
-                      </motion.a>
-                      )}
-                      {project?.githubUrl && (
-                      <motion.a
-                        href={project.githubUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.95 }}
-                        className="p-2 rounded-lg bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 transition-colors"
-                        aria-label="View source code"
-                      >
-                        <Github size={18} />
-                      </motion.a>
-                      )}
+                {/* Thumbnail: real screenshot, or a plain code panel when there is none */}
+                <div className="relative aspect-video overflow-hidden border-b border-[var(--border-color)] bg-[var(--bg-tertiary)]">
+                  {project?.thumbnail ? (
+                    <img
+                      src={project.thumbnail}
+                      alt={`Screenshot of ${project?.title || 'project'}`}
+                      width={960}
+                      height={540}
+                      loading="lazy"
+                      decoding="async"
+                      className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
+                    />
+                  ) : (
+                    <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 text-[var(--text-secondary)]">
+                      <Code2 size={40} aria-hidden="true" />
+                      <span className="text-sm font-medium">Source code on GitHub</span>
                     </div>
-                    {project?.videoPreview && (
-                      <motion.button
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.95 }}
-                        className="p-2 rounded-lg bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 transition-colors"
-                        aria-label="Play video preview"
-                      >
-                        <Play size={18} />
-                      </motion.button>
-                    )}
-                  </motion.div>
+                  )}
 
-                  {/* Featured Badge */}
                   {project?.featured && (
-                    <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-gradient-to-r from-yellow-500 to-orange-500 text-white text-xs font-semibold">
+                    <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-[var(--bg-primary)] text-[var(--text-primary)] text-xs font-semibold shadow">
                       Featured
                     </div>
                   )}
                 </div>
 
                 {/* Content */}
-                <div className="p-6">
+                <div className="p-6 flex flex-col flex-1">
                   <div className="flex items-center gap-2 mb-3">
                     <span className="px-2 py-1 rounded text-xs font-medium bg-[var(--bg-secondary)] text-[var(--accent-primary)]">
                       {project?.category || 'Project'}
@@ -189,25 +144,25 @@ export default function Projects() {
                     {project?.title || 'Project'}
                   </h3>
                   
-                  <p className="text-sm text-[var(--text-secondary)] mb-4 line-clamp-2">
+                  <p className="text-sm text-[var(--text-secondary)] mb-4">
                     {project?.description || ''}
                   </p>
 
                   {/* Problem & Solution */}
-                  <div className="space-y-2 mb-4">
+                  <dl className="space-y-2 mb-4 text-sm">
                     {project?.problem && (
-                    <div className="text-xs">
-                      <span className="font-semibold text-red-500">Problem:</span>
-                      <span className="text-[var(--text-muted)] ml-1 line-clamp-1">{project.problem}</span>
+                    <div>
+                      <dt className="font-semibold text-[var(--text-primary)]">Problem</dt>
+                      <dd className="text-[var(--text-secondary)]">{project.problem}</dd>
                     </div>
                     )}
                     {project?.solution && (
-                    <div className="text-xs">
-                      <span className="font-semibold text-green-500">Solution:</span>
-                      <span className="text-[var(--text-muted)] ml-1 line-clamp-1">{project.solution}</span>
+                    <div>
+                      <dt className="font-semibold text-[var(--text-primary)]">What I built</dt>
+                      <dd className="text-[var(--text-secondary)]">{project.solution}</dd>
                     </div>
                     )}
-                  </div>
+                  </dl>
 
                   {/* Tech Stack - defensive rendering */}
                   {safeTechStack.length > 0 && (
@@ -228,13 +183,35 @@ export default function Projects() {
                   </div>
                   )}
 
-                  {/* View Details Link */}
-                  <motion.a
-                    href={`/projects/${project?.slug || index}`}
-                    className="inline-flex items-center gap-1 text-sm font-medium text-[var(--accent-primary)] hover:underline"
-                  >
-                    View Details <ChevronRight size={16} />
-                  </motion.a>
+                  {/* Links: always visible, so they work on touch and keyboard */}
+                  {(project?.liveUrl || project?.githubUrl) && (
+                  <div className="mt-auto pt-2 flex flex-wrap gap-4">
+                    {project?.liveUrl && (
+                      <a
+                        href={project.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 text-sm font-medium text-[var(--accent-primary)] hover:underline"
+                      >
+                        <ExternalLink size={16} aria-hidden="true" />
+                        Live site
+                        <span className="sr-only">for {project.title} (opens in new tab)</span>
+                      </a>
+                    )}
+                    {project?.githubUrl && (
+                      <a
+                        href={project.githubUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 text-sm font-medium text-[var(--accent-primary)] hover:underline"
+                      >
+                        <Github size={16} aria-hidden="true" />
+                        Source code
+                        <span className="sr-only">for {project.title} (opens in new tab)</span>
+                      </a>
+                    )}
+                  </div>
+                  )}
                 </div>
               </motion.div>
             )})}
@@ -243,13 +220,16 @@ export default function Projects() {
           {/* View All Projects CTA */}
           <motion.div variants={itemVariants} className="text-center mt-12">
             <motion.a
-              href="/projects"
+              href={personalInfo.social.github}
+              target="_blank"
+              rel="noopener noreferrer"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold hover:shadow-lg hover:shadow-blue-500/25 transition-shadow"
             >
-              View All Projects
-              <ChevronRight size={20} />
+              <Github size={20} aria-hidden="true" />
+              More on GitHub
+              <ChevronRight size={20} aria-hidden="true" />
             </motion.a>
           </motion.div>
         </motion.div>

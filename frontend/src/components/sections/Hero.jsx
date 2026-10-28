@@ -114,7 +114,7 @@ export default function Hero() {
             <MapPin size={18} />
             <span>{`${personalInfo.location.city}, ${personalInfo.location.country}`}</span>
             <span className="mx-2">•</span>
-            <span className="text-green-500 flex items-center gap-1">
+            <span className="text-green-700 dark:text-green-400 flex items-center gap-1">
               <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
               {personalInfo.availability}
             </span>
