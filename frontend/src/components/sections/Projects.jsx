@@ -1,7 +1,6 @@
 import { motion, useInView } from 'framer-motion'
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState } from 'react'
 import { ExternalLink, Github, ChevronRight, Code2 } from 'lucide-react'
-import { api } from '../../lib/api'
 import { projects as staticProjects, personalInfo } from '../../data'
 import { normalizeProjectArray } from '../../utils/normalizers'
 
@@ -10,21 +9,8 @@ export default function Projects() {
   const isInView = useInView(ref, { once: true, margin: '-100px' })
   const [activeFilter, setActiveFilter] = useState('All')
   // Normalize static data on init
-  const [projects, setProjects] = useState(() => normalizeProjectArray(staticProjects))
+  const [projects] = useState(() => normalizeProjectArray(staticProjects))
 
-  useEffect(() => {
-    async function fetchProjects() {
-      try {
-        const response = await api.getProjects()
-        if (response?.success && Array.isArray(response.data) && response.data.length > 0) {
-          setProjects(response.data)
-        }
-      } catch (error) {
-        console.warn('Projects fetch failed, using static data:', error)
-      }
-    }
-    fetchProjects()
-  }, [])
 
   // Defensive array check
   const safeProjects = Array.isArray(projects) ? projects : []

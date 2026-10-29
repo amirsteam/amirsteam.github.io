@@ -1,7 +1,6 @@
 import { motion, useInView } from 'framer-motion'
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState } from 'react'
 import { Quote, Star, ChevronLeft, ChevronRight } from 'lucide-react'
-import { api } from '../../lib/api'
 import { testimonials as staticTestimonials } from '../../data'
 import { normalizeTestimonialArray } from '../../utils/normalizers'
 
@@ -12,21 +11,8 @@ export default function Testimonials() {
   const isInView = useInView(ref, { once: true, margin: '-100px' })
   const [currentIndex, setCurrentIndex] = useState(0)
   // Normalize static data on init
-  const [testimonials, setTestimonials] = useState(() => normalizeTestimonialArray(staticTestimonials))
+  const [testimonials] = useState(() => normalizeTestimonialArray(staticTestimonials))
 
-  useEffect(() => {
-    async function fetchTestimonials() {
-      try {
-        const response = await api.getTestimonials()
-        if (response?.success && Array.isArray(response.data) && response.data.length > 0) {
-          setTestimonials(response.data)
-        }
-      } catch (error) {
-        console.warn('Testimonials fetch failed, using static data:', error)
-      }
-    }
-    fetchTestimonials()
-  }, [])
 
   const containerVariants = {
     hidden: { opacity: 0 },

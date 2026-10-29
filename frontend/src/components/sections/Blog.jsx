@@ -1,8 +1,7 @@
 import { motion, useInView } from 'framer-motion'
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Calendar, Clock, ArrowRight, Tag } from 'lucide-react'
-import { api } from '../../lib/api'
 import { blogPosts as staticBlogPosts } from '../../data'
 import { formatDate } from '../../utils/dateUtils'
 import { normalizeBlogArray } from '../../utils/normalizers'
@@ -11,21 +10,8 @@ export default function Blog() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
   // Normalize static data on init
-  const [blogPosts, setBlogPosts] = useState(() => normalizeBlogArray(staticBlogPosts))
+  const [blogPosts] = useState(() => normalizeBlogArray(staticBlogPosts))
 
-  useEffect(() => {
-    async function fetchBlogs() {
-      try {
-        const response = await api.getBlogs()
-        if (response?.success && Array.isArray(response.data) && response.data.length > 0) {
-          setBlogPosts(response.data)
-        }
-      } catch (error) {
-        console.warn('Blogs fetch failed, using static data:', error)
-      }
-    }
-    fetchBlogs()
-  }, [])
 
   const containerVariants = {
     hidden: { opacity: 0 },

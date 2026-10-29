@@ -1,7 +1,6 @@
 import { motion, useInView } from 'framer-motion'
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState } from 'react'
 import { School, ShoppingCart, Newspaper, Check, ArrowRight, Briefcase } from 'lucide-react'
-import { api } from '../../lib/api'
 import { services as staticServices } from '../../data'
 import { normalizeServiceArray } from '../../utils/normalizers'
 
@@ -16,21 +15,8 @@ export default function Services() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
   // Normalize static data on init
-  const [services, setServices] = useState(() => normalizeServiceArray(staticServices))
+  const [services] = useState(() => normalizeServiceArray(staticServices))
 
-  useEffect(() => {
-    async function fetchServices() {
-      try {
-        const response = await api.getServices()
-        if (response?.success && Array.isArray(response.data) && response.data.length > 0) {
-          setServices(response.data)
-        }
-      } catch (error) {
-        console.warn('Services fetch failed, using static data:', error)
-      }
-    }
-    fetchServices()
-  }, [])
 
   const containerVariants = {
     hidden: { opacity: 0 },

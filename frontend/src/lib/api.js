@@ -1,17 +1,9 @@
-import {
-  normalizeExperienceArray,
-  normalizeServiceArray,
-  normalizeProjectArray,
-  normalizeBlogArray,
-  normalizeSkillArray,
-  normalizeTestimonialArray,
-  normalizeBlog
-} from '../utils/normalizers'
-
-const API_URL = import.meta.env.VITE_API_URL || 'https://your-backend.railway.app/api'
+// The site has no backend: all content lives in src/data/index.js.
+// The only network call is the contact form, which emails you through Web3Forms.
 
 // Public Web3Forms access key (safe to ship in the browser; it only allows
-// sending email to the address it was created for)
+// sending email to the address it was created for). Set in
+// .github/workflows/deploy-frontend.yml, or in .env for local development.
 const WEB3FORMS_KEY = import.meta.env.VITE_WEB3FORMS_KEY || ''
 
 const SUBJECT_LABELS = {
@@ -22,7 +14,17 @@ const SUBJECT_LABELS = {
   other: 'Other'
 }
 
-async function sendViaWeb3Forms({ name, email, phone, subject, message }) {
+/**
+ * Send a contact form message.
+ * Always resolves to { success, error } and never throws.
+ * Without a Web3Forms key it fails right away, and the form offers
+ * email and WhatsApp instead.
+ */
+async function submitContact({ name, email, phone, subject, message }) {
+  if (!WEB3FORMS_KEY) {
+    return { success: false, error: 'Contact form is not configured (VITE_WEB3FORMS_KEY missing)' }
+  }
+
   try {
     const response = await fetch('https://api.web3forms.com/submit', {
       method: 'POST',
@@ -40,160 +42,16 @@ async function sendViaWeb3Forms({ name, email, phone, subject, message }) {
     })
     const json = await response.json().catch(() => ({}))
     if (response.ok && json.success) {
-      return { success: true, data: json, error: null }
+      return { success: true, error: null }
     }
     console.warn('Web3Forms rejected the message:', json.message || response.status)
-    return { success: false, data: null, error: json.message || `HTTP ${response.status}` }
+    return { success: false, error: json.message || `HTTP ${response.status}` }
   } catch (error) {
     console.warn('Web3Forms request failed:', error.message)
-    return { success: false, data: null, error: error.message }
+    return { success: false, error: error.message }
   }
 }
 
-/**
- * Safe fetch wrapper - never throws, always returns consistent shape
- */
-async function safeFetch(endpoint, options = {}) {
-  try {
-    const response = await fetch(`${API_URL}${endpoint}`, {
-      headers: {
-        'Content-Type': 'application/json',
-        ...options.headers
-      },
-      ...options
-    })
-
-    if (!response.ok) {
-      console.warn(`API ${endpoint} returned ${response.status}`)
-      return { success: false, data: null, error: `HTTP ${response.status}` }
-    }
-
-    const json = await response.json()
-
-    // Handle various backend response shapes
-    const data = json.data || json.results || json.items || json
-
-    return { success: true, data, error: null }
-  } catch (error) {
-    console.warn(`API ${endpoint} failed:`, error.message)
-    return { success: false, data: null, error: error.message }
-  }
-}
-
-export const api = {
-  /**
-   * Fetch experience entries - returns normalized, UI-safe array
-   */
-  async getExperience() {
-    const result = await safeFetch('/experience')
-    if (result.success && result.data) {
-      return {
-        ...result,
-        data: normalizeExperienceArray(result.data)
-      }
-    }
-    return result
-  },
-
-  /**
-   * Fetch services - returns normalized, UI-safe array
-   */
-  async getServices() {
-    const result = await safeFetch('/services')
-    if (result.success && result.data) {
-      return {
-        ...result,
-        data: normalizeServiceArray(result.data)
-      }
-    }
-    return result
-  },
-
-  /**
-   * Fetch projects - returns normalized, UI-safe array
-   */
-  async getProjects() {
-    const result = await safeFetch('/projects')
-    if (result.success && result.data) {
-      return {
-        ...result,
-        data: normalizeProjectArray(result.data)
-      }
-    }
-    return result
-  },
-
-  /**
-   * Fetch blog posts - returns normalized, UI-safe array
-   */
-  async getBlogs() {
-    const result = await safeFetch('/blogs')
-    if (result.success && result.data) {
-      return {
-        ...result,
-        data: normalizeBlogArray(result.data)
-      }
-    }
-    return result
-  },
-
-  /**
-   * Fetch single blog by slug
-   */
-  async getBlogBySlug(slug) {
-    const result = await safeFetch(`/blogs/${slug}`)
-    if (result.success && result.data) {
-      return {
-        ...result,
-        data: normalizeBlog(result.data)
-      }
-    }
-    return result
-  },
-
-  /**
-   * Fetch skills - returns normalized, UI-safe array
-   */
-  async getSkills() {
-    const result = await safeFetch('/skills')
-    if (result.success && result.data) {
-      return {
-        ...result,
-        data: normalizeSkillArray(result.data)
-      }
-    }
-    return result
-  },
-
-  /**
-   * Fetch testimonials - returns normalized, UI-safe array
-   */
-  async getTestimonials() {
-    const result = await safeFetch('/testimonials')
-    if (result.success && result.data) {
-      return {
-        ...result,
-        data: normalizeTestimonialArray(result.data)
-      }
-    }
-    return result
-  },
-
-  /**
-   * Submit contact form.
-   * With VITE_WEB3FORMS_KEY set, messages go straight to your email through
-   * Web3Forms (no backend needed). Without it, they go to the Express API.
-   */
-  async submitContact(formData) {
-    if (WEB3FORMS_KEY) {
-      return sendViaWeb3Forms(formData)
-    }
-    return safeFetch('/contact', {
-      method: 'POST',
-      body: JSON.stringify(formData)
-    })
-  }
-}
+export const api = { submitContact }
 
 export default api
-

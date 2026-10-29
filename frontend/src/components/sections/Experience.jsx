@@ -1,7 +1,6 @@
 import { motion, useInView } from 'framer-motion'
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState } from 'react'
 import { Briefcase, GraduationCap, MapPin, Calendar } from 'lucide-react'
-import { api } from '../../lib/api'
 import { experience as staticExperience, education } from '../../data'
 import { normalizeExperienceArray } from '../../utils/normalizers'
 
@@ -9,26 +8,8 @@ export default function Experience() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
   // Normalize static data on init to ensure consistent shape
-  const [experience, setExperience] = useState(() => normalizeExperienceArray(staticExperience))
-  const [isLoading, setIsLoading] = useState(true)
+  const [experience] = useState(() => normalizeExperienceArray(staticExperience))
 
-  useEffect(() => {
-    async function fetchExperience() {
-      try {
-        const response = await api.getExperience()
-        if (response?.success && Array.isArray(response.data) && response.data.length > 0) {
-          setExperience(response.data)
-        }
-        // If API fails or returns empty, keep static data (already normalized)
-      } catch (error) {
-        // Silently fail - static data remains
-        console.warn('Experience fetch failed, using static data:', error)
-      } finally {
-        setIsLoading(false)
-      }
-    }
-    fetchExperience()
-  }, [])
 
   const containerVariants = {
     hidden: { opacity: 0 },

@@ -1,152 +1,51 @@
-# MERN Portfolio Platform
+# amirlearner.me
 
-A complete, production-grade MERN Portfolio Platform built for Amir Bahadur Shrestha.
+Portfolio site of Amir Bahadur Shrestha, MERN stack developer and educator.
+Live at **https://www.amirlearner.me**.
 
-## 🚀 Overview
+It is a static React site: there is no backend or database. All content
+(projects, skills, services, experience, testimonials) lives in one file,
+and the contact form emails messages through [Web3Forms](https://web3forms.com).
 
-This portfolio platform functions as:
-- A freelancer conversion engine
-- A technical authority website  
-- A creative + engineering showcase
-- A scalable CMS-driven system
-
-## 📁 Project Structure
+## Project structure
 
 ```
-├── frontend/          # React (Vite) Frontend
-├── backend/           # Node.js + Express API
-├── admin/             # Admin Dashboard
-└── README.md
+frontend/
+├── public/              # Static files: resume.html, images, robots.txt, sitemap.xml
+├── scripts/postbuild.js # Copies index.html for /contact/ and 404.html (GitHub Pages)
+└── src/
+    ├── data/index.js    # ← all site content: edit this to update the site
+    ├── components/      # Layout (navbar, footer) and page sections
+    ├── pages/           # Home, Contact, 404
+    ├── hooks/           # usePageMeta (page titles and descriptions)
+    └── lib/api.js       # Contact form → Web3Forms
 ```
 
-## 🧱 Tech Stack
+## Tech stack
 
-### Frontend
-- React (Vite)
-- JavaScript (NO TypeScript)
-- Tailwind CSS
-- Framer Motion
-- Redux Toolkit
-- React Router DOM
-- React Helmet Async (SEO)
+React 19 · Vite · Tailwind CSS v4 · Framer Motion · React Router · Lucide icons
 
-### Backend
-- Node.js
-- Express.js
-- JWT Authentication
-- MongoDB (Mongoose)
+## Run locally
 
-### Admin Dashboard
-- React (Vite)
-- Tailwind CSS
-- Custom shadcn-style components
-- Recharts for analytics
-
-## 🏃 Quick Start
-
-### Prerequisites
-- Node.js 18+
-- MongoDB (local or Atlas)
-
-### 1. Clone the repository
-```bash
-git clone https://github.com/amirsteam/amirsteam.github.io.git
-cd amirsteam.github.io
-```
-
-### 2. Setup Backend
-```bash
-cd backend
-cp .env.example .env
-# Edit .env with your configuration
-npm install
-npm run dev
-```
-
-### 3. Setup Frontend
 ```bash
 cd frontend
+cp .env.example .env   # add your Web3Forms key to test the contact form
 npm install
 npm run dev
 ```
 
-### 4. Setup Admin Dashboard
-```bash
-cd admin
-npm install
-npm run dev
-```
+## Update content
 
-### 5. Seed the Database
-```bash
-cd backend
-npm run seed
-```
+Edit `frontend/src/data/index.js` and push to `main`. Project screenshots go in
+`frontend/public/projects/` (960×540 WebP works well).
 
-## 🔐 Environment Variables
+## Deploy
 
-### Backend (.env)
-```env
-NODE_ENV=development
-PORT=5000
-MONGODB_URI=mongodb://localhost:27017/portfolio
-JWT_SECRET=your_super_secret_jwt_key
-JWT_EXPIRES_IN=7d
-FRONTEND_URL=http://localhost:3000
-ADMIN_EMAIL=admin@amirlearner.me
-ADMIN_PASSWORD=changeme123
-```
+Every push to `main` that changes `frontend/` builds the site and publishes it to
+GitHub Pages. See [DEPLOYMENT.md](DEPLOYMENT.md).
 
-## 📱 Features
+## History
 
-### Public Website
-- ✅ Animated Hero Section
-- ✅ About Me Section
-- ✅ 4 Skill Pillars (MERN, UI/UX, Graphics, Education)
-- ✅ Projects Showcase (6 projects)
-- ✅ Solutions & Packages
-- ✅ Experience & Education Timeline
-- ✅ Testimonials Carousel
-- ✅ Blog/Articles Section
-- ✅ Contact Form (MongoDB-backed)
-- ✅ Dark/Light Mode Toggle
-- ✅ SEO Optimization
-- ✅ Nepali (BS) & English (AD) Date Support
-
-### Admin Dashboard
-- ✅ JWT-based Authentication
-- ✅ Protected Routes
-- ✅ Dashboard with Statistics
-- ✅ Projects CRUD
-- ✅ Skills CRUD
-- ✅ Services CRUD
-- ✅ Experience CRUD
-- ✅ Testimonials CRUD
-- ✅ Blog Posts CRUD
-- ✅ Contact Inquiry Management
-
-## 🗄️ Database Models
-
-1. **Admin** - Admin users with JWT authentication
-2. **Project** - Portfolio projects
-3. **Skill** - Skill categories and items
-4. **Service** - Service packages
-5. **Experience** - Work & education history
-6. **Testimonial** - Client testimonials
-7. **Blog** - Blog posts
-8. **Contact** - Contact form submissions
-
-## 🚀 Deployment
-
-See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed deployment instructions.
-
-## 👤 Author
-
-**Amir Bahadur Shrestha**
-- MERN Stack Developer & Digital Solutions Educator
-- Location: Panauti, Kavre, Nepal
-- Website: [amirlearner.me](https://amirlearner.me)
-
-## 📄 License
-
-MIT License - see LICENSE file for details.
+Until October 2026 this repo also held an Express/MongoDB API (`backend/`) and an
+admin dashboard (`admin/`). They were retired to keep the site simple and free to
+run; both are still in the git history if you need them.

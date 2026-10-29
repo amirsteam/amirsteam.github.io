@@ -1,7 +1,6 @@
 import { motion, useInView } from 'framer-motion'
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState } from 'react'
 import { Code2, Palette, Film, GraduationCap } from 'lucide-react'
-import { api } from '../../lib/api'
 import { skills as staticSkills } from '../../data'
 
 const iconMap = {
@@ -24,31 +23,8 @@ export default function Skills() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
   const [activeCategory, setActiveCategory] = useState('mernEngineering')
-  const [skills, setSkills] = useState(staticSkills || {})
+  const [skills] = useState(staticSkills || {})
 
-  useEffect(() => {
-    async function fetchSkills() {
-      try {
-        const response = await api.getSkills()
-        if (response?.success && Array.isArray(response.data) && response.data.length > 0) {
-          // Convert array to object format matching static data structure
-          const skillsObj = {}
-          response.data.forEach(skill => {
-            if (skill?.key) {
-              skillsObj[skill.key] = skill
-            }
-          })
-          if (Object.keys(skillsObj).length > 0) {
-            setSkills(skillsObj)
-            setActiveCategory(response.data[0]?.key || 'mernEngineering')
-          }
-        }
-      } catch (error) {
-        console.warn('Skills fetch failed, using static data:', error)
-      }
-    }
-    fetchSkills()
-  }, [])
 
   // Safe categories extraction
   const safeSkills = skills && typeof skills === 'object' ? skills : {}

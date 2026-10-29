@@ -39,7 +39,9 @@ jobs:
       - name: Build with environment variables
         working-directory: frontend
         env:
-          VITE_API_URL: https://amirsteamgithubio-production.up.railway.app/api
+          # Public Web3Forms access key for the contact form (safe to commit).
+          # Leave empty and the form offers email/WhatsApp buttons instead.
+          VITE_WEB3FORMS_KEY: ''
         run: npm run build
 
       - name: Setup Pages
