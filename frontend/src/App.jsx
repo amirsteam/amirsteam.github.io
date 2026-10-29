@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import Layout from './components/layout/Layout'
 import Home from './pages/Home'
@@ -9,10 +10,21 @@ import ContactPage from './pages/ContactPage'
 import NotFound from './pages/NotFound'
 import ErrorBoundary from './components/ErrorBoundary'
 
+// The CMS dashboard loads only when someone opens /admin
+const AdminApp = lazy(() => import('./admin/AdminApp'))
+
 function App() {
   return (
     <ErrorBoundary>
       <Routes>
+        <Route
+          path="/admin/*"
+          element={
+            <Suspense fallback={<p className="p-8 text-sm">Loading dashboard…</p>}>
+              <AdminApp />
+            </Suspense>
+          }
+        />
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="projects" element={<ProjectsPage />} />

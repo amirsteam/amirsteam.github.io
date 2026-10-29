@@ -8,6 +8,9 @@ on:
       - 'frontend/**'
       - '.github/workflows/deploy-frontend.yml'
   workflow_dispatch:
+  # Sent by the CMS "Publish site" button
+  repository_dispatch:
+    types: [cms-publish]
 
 permissions:
   contents: read
@@ -41,9 +44,19 @@ jobs:
         working-directory: frontend
         run: npm run lint
 
+      # Pull published content from the CMS API (repository variable CONTENT_API_URL,
+      # e.g. https://amirlearner-api.onrender.com/api). Skipped when it isn't set.
+      - name: Fetch CMS content
+        working-directory: frontend
+        env:
+          CONTENT_API_URL: ${{ vars.CONTENT_API_URL }}
+        run: npm run fetch-content
+
       - name: Build with environment variables
         working-directory: frontend
         env:
+          # Where the /admin dashboard sends requests
+          VITE_API_URL: ${{ vars.CONTENT_API_URL }}
           # Public Web3Forms access key for the contact form (safe to commit).
           # Leave empty and the form offers email/WhatsApp buttons instead.
           VITE_WEB3FORMS_KEY: ''

@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import { useInView } from 'framer-motion'
 import { useRef } from 'react'
 import { Download, Briefcase, Users, Award, Coffee } from 'lucide-react'
-import { personalInfo } from '../../data'
+import { personalInfo, stats as statsData } from '../../data'
 
 export default function About({ isPage = false }) {
   // As a standalone page the section title is the page h1
@@ -11,12 +11,9 @@ export default function About({ isPage = false }) {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 
-  const stats = [
-    { icon: Briefcase, value: '20+', label: 'Projects Completed' },
-    { icon: Users, value: '100+', label: 'Students Trained' },
-    { icon: Award, value: '10+', label: 'Institutions Served' },
-    { icon: Coffee, value: '1000+', label: 'Cups of Coffee' }
-  ]
+  // Stat cards come from the data (editable in the admin); icons follow their position
+  const statIcons = [Briefcase, Users, Award, Coffee]
+  const stats = statsData.map((stat, i) => ({ ...stat, icon: statIcons[i % statIcons.length] }))
 
   const containerVariants = {
     hidden: { opacity: 0 },

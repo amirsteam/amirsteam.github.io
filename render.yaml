@@ -1,0 +1,41 @@
+# Render Blueprint for the CMS API (backend/).
+# Render dashboard → New → Blueprint → pick this repository. Render asks for the
+# values marked "sync: false"; everything else is filled in here.
+services:
+  - type: web
+    name: amirlearner-api
+    runtime: node
+    plan: free
+    region: singapore
+    rootDir: backend
+    buildCommand: npm ci --omit=dev
+    startCommand: npm start
+    healthCheckPath: /api/health
+    autoDeploy: true
+    buildFilter:
+      paths:
+        - backend/**
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_VERSION
+        value: "22"
+      # MongoDB Atlas connection string
+      - key: MONGODB_URI
+        sync: false
+      # Signs admin logins; Render generates a long random value
+      - key: JWT_SECRET
+        generateValue: true
+      - key: ALLOWED_ORIGINS
+        value: https://www.amirlearner.me
+      # First admin account (created on first start, then ignored)
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      # Publish button: fine-grained GitHub token with Contents read & write
+      # on amirsteam/amirsteam.github.io
+      - key: GITHUB_TOKEN
+        sync: false
+      - key: GITHUB_REPO
+        value: amirsteam/amirsteam.github.io

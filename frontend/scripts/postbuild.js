@@ -3,7 +3,7 @@
 // - any other unknown path gets 404.html, which loads the app's 404 page
 import { copyFileSync, mkdirSync } from 'node:fs'
 
-const routes = ['projects', 'services', 'about', 'skills', 'contact']
+const routes = ['projects', 'services', 'about', 'skills', 'contact', 'admin']
 
 for (const route of routes) {
   mkdirSync(`dist/${route}`, { recursive: true })

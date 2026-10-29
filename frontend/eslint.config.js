@@ -27,4 +27,9 @@ export default defineConfig([
       'no-unused-vars': ['error', { varsIgnorePattern: '^([A-Z_]|motion$)' }],
     },
   },
+  // Build scripts run in Node, not the browser
+  {
+    files: ['scripts/**/*.js'],
+    languageOptions: { globals: globals.node },
+  },
 ])

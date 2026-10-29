@@ -1,18 +1,24 @@
 name: Check
 
-# Lint and build every pull request, so problems show up before merging.
-# (Pushes to main are checked by the deploy workflow.)
+# Lint and build the site, and test the API, on every pull request and on
+# pushes that change the API. (Site pushes to main are checked by the deploy workflow.)
 on:
   pull_request:
     paths:
       - 'frontend/**'
+      - 'backend/**'
       - '.github/workflows/**'
+  push:
+    branches: [main]
+    paths:
+      - 'backend/**'
 
 permissions:
   contents: read
 
 jobs:
-  check:
+  frontend:
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -34,3 +40,23 @@ jobs:
       - name: Build
         working-directory: frontend
         run: npm run build
+
+  backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Install dependencies
+        working-directory: backend
+        run: npm ci
+
+      # Uses a throwaway in-memory MongoDB; no secrets needed
+      - name: Test API
+        working-directory: backend
+        run: npm test

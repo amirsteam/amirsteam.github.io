@@ -8,7 +8,8 @@
     "dev": "vite",
     "build": "vite build && node scripts/postbuild.js",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "fetch-content": "node scripts/fetch-content.js"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.18",
