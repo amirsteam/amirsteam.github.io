@@ -55,7 +55,8 @@ Body copy is capped at about 65 characters per line (`max-w-2xl` or `max-w-prose
 - Tailwind's 4px scale everywhere.
 - Sections: `py-20 md:py-28`. Content width: `max-w-6xl`, side padding `px-4 sm:px-6 lg:px-8`.
 - **Left-aligned by default.** Section headers (eyebrow, h2, intro) align left; only the
-  404 page and short confirmation messages are centered.
+  404 page and short confirmation messages are centered. On phones the hero is centered
+  under the round photo; from `lg` up it is left-aligned like everything else.
 - Sections alternate `--bg-primary` / `--bg-secondary`.
 
 ## Shape and depth
@@ -94,6 +95,10 @@ nothing scales up.
 
 Short fades and 16px slide-ins when a section first appears (300–500ms). No infinite loops,
 floating elements, shimmer or pulsing glows. Everything stops for `prefers-reduced-motion`.
+
+The one exception is the hero portrait: an accent ring draws around it once, a small dot
+circles the ring every 24s, and the photo floats 6px over 6s. Keep it that quiet, and keep
+it to the hero.
 
 ## Imagery and icons
 
