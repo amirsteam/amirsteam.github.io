@@ -25,7 +25,7 @@ export const resources = {
       { name: 'problem', label: 'Problem', type: 'textarea', rows: 2 },
       { name: 'solution', label: 'What I built', type: 'textarea', rows: 3 },
       { name: 'techStack', label: 'Tech stack', type: 'list', help: 'One per line. The first four show on the card.' },
-      { name: 'thumbnail', label: 'Screenshot path', type: 'text', help: 'e.g. /projects/my-project.webp (file in frontend/public/projects). Leave empty for a plain panel.' },
+      { name: 'thumbnail', label: 'Screenshot path', type: 'text', help: 'Leave empty to use an automatic screenshot of the live site (taken when you publish). Or enter your own file, e.g. /projects/my-project.webp (in frontend/public/projects).' },
       { name: 'liveUrl', label: 'Live site URL', type: 'url' },
       { name: 'githubUrl', label: 'Source code URL', type: 'url' },
       { name: 'featured', label: 'Featured (shown on the home page)', type: 'checkbox' },

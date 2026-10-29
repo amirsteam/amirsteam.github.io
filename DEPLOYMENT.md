@@ -69,8 +69,10 @@ by design. Without it, messages still reach `/admin/messages`.
 3. Press **Publish site**. Watch progress in the repository's **Actions** tab; the
    site updates in about 2 minutes.
 
-Project screenshots are files in `frontend/public/projects/` (960×540 WebP works
-well); in the dashboard, enter the path, e.g. `/projects/my-project.webp`.
+Project screenshots: leave **Screenshot path** empty and the deploy takes a screenshot
+of the project's **Live site URL** automatically (top of the home page, 960×540). For a
+hand-picked image, add a file to `frontend/public/projects/` (960×540 WebP works well) and
+enter its path, e.g. `/projects/my-project.webp`.
 
 ## How a deploy works
 

@@ -19,3 +19,6 @@ Thumbs.db
 
 # Local command output
 *.log
+
+# Project screenshots taken automatically at build time
+frontend/public/projects/auto/

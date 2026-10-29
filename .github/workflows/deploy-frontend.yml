@@ -52,6 +52,11 @@ jobs:
           CONTENT_API_URL: ${{ vars.CONTENT_API_URL }}
         run: npm run fetch-content
 
+      # Projects with a live URL but no screenshot path get one taken here
+      - name: Screenshot live project sites
+        working-directory: frontend
+        run: npm run capture-screenshots
+
       - name: Build with environment variables
         working-directory: frontend
         env:
