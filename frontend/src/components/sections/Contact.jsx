@@ -134,17 +134,16 @@ export default function Contact() {
           className="max-w-6xl mx-auto"
         >
           {/* Section Header */}
-          <motion.div variants={itemVariants} className="text-center mb-16">
+          <motion.div variants={itemVariants} className="mb-12 md:mb-16 max-w-2xl">
             <span className="text-sm font-semibold text-[var(--accent-primary)] uppercase tracking-wider">
               Get In Touch
             </span>
-            <h2 className="mt-2 text-3xl sm:text-4xl md:text-5xl font-bold text-[var(--text-primary)]">
+            <h2 className="mt-2 text-3xl md:text-4xl font-bold tracking-tight text-[var(--text-primary)]">
               Let's Work Together
             </h2>
-            <p className="mt-4 text-lg text-[var(--text-secondary)] max-w-2xl mx-auto">
+            <p className="mt-4 text-lg text-[var(--text-secondary)]">
               Have a project in mind or want to discuss opportunities? I'd love to hear from you.
             </p>
-            <div className="mt-4 w-20 h-1 bg-gradient-to-r from-blue-500 to-purple-600 mx-auto rounded-full" />
           </motion.div>
 
           <div className="grid lg:grid-cols-5 gap-12">
@@ -162,8 +161,8 @@ export default function Contact() {
               {/* Contact Cards */}
               <div className="space-y-4">
                 <div className="flex items-center gap-4 p-4 rounded-xl bg-[var(--bg-primary)] border border-[var(--border-color)]">
-                  <div className="p-3 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600">
-                    <Mail className="w-5 h-5 text-white" />
+                  <div className="p-3 rounded-lg bg-[var(--accent-soft)] text-[var(--accent-primary)]">
+                    <Mail className="w-5 h-5" aria-hidden="true" />
                   </div>
                   <div>
                     <p className="text-sm text-[var(--text-muted)]">Email</p>
@@ -174,8 +173,8 @@ export default function Contact() {
                 </div>
 
                 <div className="flex items-center gap-4 p-4 rounded-xl bg-[var(--bg-primary)] border border-[var(--border-color)]">
-                  <div className="p-3 rounded-lg bg-gradient-to-r from-green-500 to-emerald-500">
-                    <Phone className="w-5 h-5 text-white" />
+                  <div className="p-3 rounded-lg bg-[var(--accent-soft)] text-[var(--accent-primary)]">
+                    <Phone className="w-5 h-5" aria-hidden="true" />
                   </div>
                   <div>
                     <p className="text-sm text-[var(--text-muted)]">Phone</p>
@@ -186,8 +185,8 @@ export default function Contact() {
                 </div>
 
                 <div className="flex items-center gap-4 p-4 rounded-xl bg-[var(--bg-primary)] border border-[var(--border-color)]">
-                  <div className="p-3 rounded-lg bg-gradient-to-r from-orange-500 to-red-500">
-                    <MapPin className="w-5 h-5 text-white" />
+                  <div className="p-3 rounded-lg bg-[var(--accent-soft)] text-[var(--accent-primary)]">
+                    <MapPin className="w-5 h-5" aria-hidden="true" />
                   </div>
                   <div>
                     <p className="text-sm text-[var(--text-muted)]">Location</p>
@@ -198,8 +197,8 @@ export default function Contact() {
                 </div>
 
                 <div className="flex items-center gap-4 p-4 rounded-xl bg-[var(--bg-primary)] border border-[var(--border-color)]">
-                  <div className="p-3 rounded-lg bg-gradient-to-r from-purple-500 to-pink-500">
-                    <Clock className="w-5 h-5 text-white" />
+                  <div className="p-3 rounded-lg bg-[var(--accent-soft)] text-[var(--accent-primary)]">
+                    <Clock className="w-5 h-5" aria-hidden="true" />
                   </div>
                   <div>
                     <p className="text-sm text-[var(--text-muted)]">Availability</p>
@@ -218,8 +217,6 @@ export default function Contact() {
                       href={social.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      whileHover={{ scale: 1.1, y: -2 }}
-                      whileTap={{ scale: 0.95 }}
                       className="p-3 rounded-xl bg-[var(--bg-primary)] border border-[var(--border-color)] text-[var(--text-secondary)] hover:text-[var(--accent-primary)] hover:border-[var(--accent-primary)] transition-colors"
                       aria-label={social.name}
                     >
@@ -232,7 +229,7 @@ export default function Contact() {
 
             {/* Contact Form */}
             <motion.div variants={itemVariants} className="lg:col-span-3">
-              <form onSubmit={handleSubmit} className="bg-[var(--bg-primary)] rounded-2xl p-8 border border-[var(--border-color)]">
+              <form onSubmit={handleSubmit} className="bg-[var(--bg-primary)] rounded-xl p-8 border border-[var(--border-color)]">
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
                     <label htmlFor="name" className="block text-sm font-medium text-[var(--text-primary)] mb-2">
@@ -338,9 +335,7 @@ export default function Contact() {
                   <motion.button
                     type="submit"
                     disabled={isSubmitting}
-                    whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
-                    whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
-                    className="w-full flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold hover:shadow-lg hover:shadow-blue-500/25 transition-shadow disabled:opacity-70 disabled:cursor-not-allowed"
+                    className="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-[var(--accent-primary)] text-[var(--accent-contrast)] hover:bg-[var(--accent-hover)] font-semibold transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
                   >
                     {isSubmitting ? (
                       <>

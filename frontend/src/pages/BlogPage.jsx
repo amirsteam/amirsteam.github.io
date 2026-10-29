@@ -36,18 +36,17 @@ export default function BlogPage() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-center mb-16"
+              className="mb-12 md:mb-16 max-w-2xl"
             >
               <span className="text-sm font-semibold text-[var(--accent-primary)] uppercase tracking-wider">
                 Blog
               </span>
-              <h1 className="mt-2 text-3xl sm:text-4xl md:text-5xl font-bold text-[var(--text-primary)]">
+              <h1 className="mt-2 text-3xl md:text-4xl font-bold tracking-tight text-[var(--text-primary)]">
                 Articles & Insights
               </h1>
-              <p className="mt-4 text-lg text-[var(--text-secondary)] max-w-2xl mx-auto">
+              <p className="mt-4 text-lg text-[var(--text-secondary)]">
                 Sharing knowledge about MERN stack development, best practices, and lessons learned from real-world projects.
               </p>
-              <div className="mt-4 w-20 h-1 bg-gradient-to-r from-blue-500 to-purple-600 mx-auto rounded-full" />
             </motion.div>
 
             {/* Search & Filter */}
@@ -75,7 +74,7 @@ export default function BlogPage() {
                     onClick={() => setSelectedCategory(category)}
                     className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
                       selectedCategory === category
-                        ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white'
+                        ? 'bg-[var(--accent-soft)] text-[var(--accent-primary)] border border-[var(--accent-primary)]'
                         : 'bg-[var(--bg-secondary)] text-[var(--text-secondary)] hover:text-[var(--accent-primary)] border border-[var(--border-color)]'
                     }`}
                   >
@@ -93,12 +92,11 @@ export default function BlogPage() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.05 }}
-                  whileHover={{ y: -5 }}
-                  className="bg-[var(--bg-secondary)] rounded-2xl overflow-hidden border border-[var(--border-color)] hover:border-[var(--accent-primary)] transition-colors"
+                  className="bg-[var(--bg-secondary)] rounded-xl overflow-hidden border border-[var(--border-color)] hover:border-[var(--accent-primary)] transition-colors"
                 >
                   <Link to={`/blog/${post.slug}`}>
                     {/* Thumbnail */}
-                    <div className="aspect-video bg-gradient-to-br from-blue-500/20 to-purple-600/20 flex items-center justify-center">
+                    <div className="aspect-video bg-[var(--bg-tertiary)] flex items-center justify-center">
                       <span className="text-5xl">
                         {post.category === 'Development' && '💻'}
                         {post.category === 'Security' && '🔐'}

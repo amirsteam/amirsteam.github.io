@@ -45,14 +45,13 @@ export default function About() {
           className="max-w-6xl mx-auto"
         >
           {/* Section Header */}
-          <motion.div variants={itemVariants} className="text-center mb-16">
+          <motion.div variants={itemVariants} className="mb-12 md:mb-16 max-w-2xl">
             <span className="text-sm font-semibold text-[var(--accent-primary)] uppercase tracking-wider">
               About Me
             </span>
-            <h2 className="mt-2 text-3xl sm:text-4xl md:text-5xl font-bold text-[var(--text-primary)]">
+            <h2 className="mt-2 text-3xl md:text-4xl font-bold tracking-tight text-[var(--text-primary)]">
               Software Engineer. Educator. Creator.
             </h2>
-            <div className="mt-4 w-20 h-1 bg-gradient-to-r from-blue-500 to-purple-600 mx-auto rounded-full" />
           </motion.div>
 
           {/* Content Grid */}
@@ -61,8 +60,8 @@ export default function About() {
             <motion.div variants={itemVariants} className="relative">
               <div className="relative">
                 {/* Main Image Container */}
-                <div className="relative rounded-2xl overflow-hidden">
-                  <div className="aspect-square bg-gradient-to-br from-blue-500 to-purple-600 p-1 rounded-2xl">
+                <div className="relative rounded-xl overflow-hidden">
+                  <div className="aspect-square border border-[var(--border-color)] rounded-xl">
                     <div className="w-full h-full bg-[var(--bg-primary)] rounded-xl overflow-hidden">
                       {/* Profile Image */}
                       <img
@@ -92,7 +91,7 @@ export default function About() {
                   className="absolute -bottom-6 -left-6 bg-[var(--bg-primary)] p-4 rounded-xl shadow-xl border border-[var(--border-color)]"
                 >
                   <div className="flex items-center gap-2">
-                    <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse" />
+                    <div className="w-3 h-3 bg-green-500 rounded-full " />
                     <span className="text-sm text-[var(--text-secondary)]">Available for Work</span>
                   </div>
                 </motion.div>
@@ -129,19 +128,15 @@ export default function About() {
               {/* CTA */}
               <div className="mt-8 flex flex-wrap gap-4">
                 <motion.a
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
                   href="/resume.html"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold hover:shadow-lg hover:shadow-blue-500/25 transition-shadow"
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[var(--accent-primary)] text-[var(--accent-contrast)] hover:bg-[var(--accent-hover)] font-semibold transition-colors"
                 >
                   <Download size={20} />
                   View Resume
                 </motion.a>
                 <motion.a
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
                   href="#contact"
                   className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border-2 border-[var(--border-color)] text-[var(--text-primary)] font-semibold hover:border-[var(--accent-primary)] transition-colors"
                 >
@@ -159,7 +154,7 @@ export default function About() {
             {stats.map((stat) => (
               <div
                 key={stat.label}
-                className="text-center p-6 rounded-2xl bg-[var(--bg-primary)] border border-[var(--border-color)]"
+                className="text-center p-6 rounded-xl bg-[var(--bg-primary)] border border-[var(--border-color)]"
               >
                 <stat.icon className="w-8 h-8 mx-auto mb-4 text-[var(--accent-primary)]" />
                 <div className="text-3xl font-bold text-[var(--text-primary)]">{stat.value}</div>

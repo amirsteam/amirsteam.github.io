@@ -66,17 +66,16 @@ export default function Skills() {
           className="max-w-6xl mx-auto"
         >
           {/* Section Header */}
-          <motion.div variants={itemVariants} className="text-center mb-16">
+          <motion.div variants={itemVariants} className="mb-12 md:mb-16 max-w-2xl">
             <span className="text-sm font-semibold text-[var(--accent-primary)] uppercase tracking-wider">
               Expertise
             </span>
-            <h2 className="mt-2 text-3xl sm:text-4xl md:text-5xl font-bold text-[var(--text-primary)]">
+            <h2 className="mt-2 text-3xl md:text-4xl font-bold tracking-tight text-[var(--text-primary)]">
               My Skill Pillars
             </h2>
-            <p className="mt-4 text-lg text-[var(--text-secondary)] max-w-2xl mx-auto">
+            <p className="mt-4 text-lg text-[var(--text-secondary)]">
               Four key areas of expertise that I bring to every project, combining technical depth with creative vision.
             </p>
-            <div className="mt-4 w-20 h-1 bg-gradient-to-r from-blue-500 to-purple-600 mx-auto rounded-full" />
           </motion.div>
 
           {/* Skill Category Tabs */}
@@ -87,15 +86,14 @@ export default function Skills() {
                 <motion.button
                   key={category?.key || 'skill'}
                   onClick={() => setActiveCategory(category?.key)}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className={`p-6 rounded-2xl border-2 transition-all duration-300 ${
+                  aria-pressed={activeCategory === category?.key}
+                  className={`p-5 rounded-xl border text-left transition-colors ${
                     activeCategory === category?.key
-                      ? 'bg-gradient-to-br ' + (category?.color || 'from-blue-500 to-cyan-500') + ' border-transparent text-white shadow-lg'
+                      ? 'bg-[var(--accent-soft)] border-[var(--accent-primary)] text-[var(--accent-primary)]'
                       : 'bg-[var(--bg-secondary)] border-[var(--border-color)] text-[var(--text-secondary)] hover:border-[var(--accent-primary)]'
                   }`}
                 >
-                  <IconComponent className={`w-8 h-8 mx-auto mb-3 ${activeCategory === category?.key ? 'text-white' : ''}`} />
+                  <IconComponent className="w-6 h-6 mb-3" aria-hidden="true" />
                   <h3 className="font-semibold text-sm md:text-base">{category?.title || 'Skill'}</h3>
                 </motion.button>
               )
@@ -108,12 +106,12 @@ export default function Skills() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
-            className="bg-[var(--bg-secondary)] rounded-3xl p-8 border border-[var(--border-color)]"
+            className="bg-[var(--bg-secondary)] rounded-xl p-8 border border-[var(--border-color)]"
           >
             <div className="grid md:grid-cols-2 gap-8">
               {/* Left - Description */}
               <div>
-                <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r ${activeSkill?.color || 'from-blue-500 to-cyan-500'} text-white text-sm font-medium mb-4`}>
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-[var(--accent-soft)] text-[var(--accent-primary)] text-sm font-medium mb-4">
                   {(() => {
                     const IconComponent = iconMap[activeSkill?.icon] || Code2
                     return <IconComponent size={16} />

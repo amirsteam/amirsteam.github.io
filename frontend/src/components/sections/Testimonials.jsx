@@ -68,24 +68,22 @@ export default function Testimonials() {
           className="max-w-6xl mx-auto"
         >
           {/* Section Header */}
-          <motion.div variants={itemVariants} className="text-center mb-16">
+          <motion.div variants={itemVariants} className="mb-12 md:mb-16 max-w-2xl">
             <span className="text-sm font-semibold text-[var(--accent-primary)] uppercase tracking-wider">
               Testimonials
             </span>
-            <h2 className="mt-2 text-3xl sm:text-4xl md:text-5xl font-bold text-[var(--text-primary)]">
+            <h2 className="mt-2 text-3xl md:text-4xl font-bold tracking-tight text-[var(--text-primary)]">
               What Clients Say
             </h2>
-            <p className="mt-4 text-lg text-[var(--text-secondary)] max-w-2xl mx-auto">
+            <p className="mt-4 text-lg text-[var(--text-secondary)]">
               Don't just take my word for it. Here's what my clients and students have to say about working with me.
             </p>
-            <div className="mt-4 w-20 h-1 bg-gradient-to-r from-blue-500 to-purple-600 mx-auto rounded-full" />
           </motion.div>
 
           {/* Featured Testimonial */}
           <motion.div variants={itemVariants} className="relative mb-16">
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-600/10 rounded-3xl blur-3xl" />
             
-            <div className="relative bg-[var(--bg-secondary)] rounded-3xl p-8 md:p-12 border border-[var(--border-color)]">
+            <div className="relative bg-[var(--bg-secondary)] rounded-xl p-8 md:p-12 border border-[var(--border-color)]">
               <Quote className="w-12 h-12 text-[var(--accent-primary)] mb-6" />
               
               <motion.div
@@ -101,7 +99,7 @@ export default function Testimonials() {
 
                 <div className="flex items-center justify-between flex-wrap gap-4">
                   <div className="flex items-center gap-4">
-                    <div className="w-14 h-14 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white text-xl font-bold">
+                    <div className="w-14 h-14 rounded-full bg-[var(--accent-soft)] flex items-center justify-center text-[var(--accent-primary)] text-xl font-bold">
                       {(currentTestimonial?.name || 'C').charAt(0)}
                     </div>
                     <div>
@@ -125,8 +123,6 @@ export default function Testimonials() {
               {/* Navigation */}
               <div className="absolute bottom-4 right-4 md:bottom-8 md:right-8 flex items-center gap-2">
                 <motion.button
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}
                   onClick={prevTestimonial}
                   className="p-2 rounded-lg bg-[var(--bg-tertiary)] text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors"
                   aria-label="Previous testimonial"
@@ -137,8 +133,6 @@ export default function Testimonials() {
                   {safeCurrentIndex + 1} / {safeTestimonials.length}
                 </span>
                 <motion.button
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}
                   onClick={nextTestimonial}
                   className="p-2 rounded-lg bg-[var(--bg-tertiary)] text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors"
                   aria-label="Next testimonial"
@@ -157,17 +151,16 @@ export default function Testimonials() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ delay: index * 0.1 }}
-                whileHover={{ y: -5 }}
-                className={`p-6 rounded-2xl border transition-all ${
+                className={`p-6 rounded-xl border transition-all ${
                   safeCurrentIndex === index
-                    ? 'bg-gradient-to-br from-blue-500/10 to-purple-600/10 border-[var(--accent-primary)]'
+                    ? 'bg-[var(--bg-secondary)] border-[var(--accent-primary)]'
                     : 'bg-[var(--bg-secondary)] border-[var(--border-color)] hover:border-[var(--accent-primary)]'
                 }`}
                 onClick={() => setCurrentIndex(index)}
                 style={{ cursor: 'pointer' }}
               >
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold">
+                  <div className="w-12 h-12 rounded-full bg-[var(--accent-soft)] flex items-center justify-center text-[var(--accent-primary)] font-bold">
                     {(testimonial?.name || 'C').charAt(0)}
                   </div>
                   <div>

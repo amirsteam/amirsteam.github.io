@@ -45,32 +45,31 @@ export default function Experience() {
           className="max-w-6xl mx-auto"
         >
           {/* Section Header - unchanged */}
-          <motion.div variants={itemVariants} className="text-center mb-16">
+          <motion.div variants={itemVariants} className="mb-12 md:mb-16 max-w-2xl">
             <span className="text-sm font-semibold text-[var(--accent-primary)] uppercase tracking-wider">
               Career Path
             </span>
-            <h2 className="mt-2 text-3xl sm:text-4xl md:text-5xl font-bold text-[var(--text-primary)]">
+            <h2 className="mt-2 text-3xl md:text-4xl font-bold tracking-tight text-[var(--text-primary)]">
               Experience & Education
             </h2>
-            <p className="mt-4 text-lg text-[var(--text-secondary)] max-w-2xl mx-auto">
+            <p className="mt-4 text-lg text-[var(--text-secondary)]">
               My journey in technology, combining professional experience with continuous learning.
             </p>
-            <div className="mt-4 w-20 h-1 bg-gradient-to-r from-blue-500 to-purple-600 mx-auto rounded-full" />
           </motion.div>
 
           <div className="grid lg:grid-cols-2 gap-12">
             {/* Experience */}
             <motion.div variants={itemVariants}>
               <div className="flex items-center gap-3 mb-8">
-                <div className="p-3 rounded-xl bg-gradient-to-r from-blue-500 to-purple-600">
-                  <Briefcase className="w-6 h-6 text-white" />
+                <div className="p-3 rounded-lg bg-[var(--accent-soft)] text-[var(--accent-primary)]">
+                  <Briefcase className="w-6 h-6" aria-hidden="true" />
                 </div>
                 <h3 className="text-2xl font-bold text-[var(--text-primary)]">Experience</h3>
               </div>
 
               <div className="relative">
                 {/* Timeline Line */}
-                <div className="absolute left-5 top-0 bottom-0 w-0.5 bg-gradient-to-b from-blue-500 to-purple-600" />
+                <div className="absolute left-5 top-0 bottom-0 w-0.5 bg-[var(--border-color)]" />
 
                 {/* Timeline Items - with safe rendering */}
                 <div className="space-y-8">
@@ -83,9 +82,9 @@ export default function Experience() {
                       className="relative pl-14"
                     >
                       {/* Timeline Dot */}
-                      <div className="absolute left-3 top-1 w-5 h-5 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 border-4 border-[var(--bg-secondary)]" />
+                      <div className="absolute left-3 top-1 w-5 h-5 rounded-full bg-[var(--accent-primary)] border-4 border-[var(--bg-secondary)]" />
 
-                      <div className="bg-[var(--bg-primary)] rounded-2xl p-6 border border-[var(--border-color)] hover:border-[var(--accent-primary)] transition-colors">
+                      <div className="bg-[var(--bg-primary)] rounded-xl p-6 border border-[var(--border-color)] hover:border-[var(--accent-primary)] transition-colors">
                         <div className="flex flex-wrap items-center gap-2 text-sm text-[var(--text-muted)] mb-2">
                           <span className="flex items-center gap-1">
                             <Calendar size={14} />
@@ -132,15 +131,15 @@ export default function Experience() {
             {/* Education - with safe rendering */}
             <motion.div variants={itemVariants}>
               <div className="flex items-center gap-3 mb-8">
-                <div className="p-3 rounded-xl bg-gradient-to-r from-green-500 to-emerald-500">
-                  <GraduationCap className="w-6 h-6 text-white" />
+                <div className="p-3 rounded-lg bg-[var(--accent-soft)] text-[var(--accent-primary)]">
+                  <GraduationCap className="w-6 h-6" aria-hidden="true" />
                 </div>
                 <h3 className="text-2xl font-bold text-[var(--text-primary)]">Education</h3>
               </div>
 
               <div className="relative">
                 {/* Timeline Line */}
-                <div className="absolute left-5 top-0 bottom-0 w-0.5 bg-gradient-to-b from-green-500 to-emerald-500" />
+                <div className="absolute left-5 top-0 bottom-0 w-0.5 bg-[var(--border-color)]" />
 
                 {/* Timeline Items */}
                 <div className="space-y-8">
@@ -153,9 +152,9 @@ export default function Experience() {
                       className="relative pl-14"
                     >
                       {/* Timeline Dot */}
-                      <div className="absolute left-3 top-1 w-5 h-5 rounded-full bg-gradient-to-r from-green-500 to-emerald-500 border-4 border-[var(--bg-secondary)]" />
+                      <div className="absolute left-3 top-1 w-5 h-5 rounded-full bg-[var(--accent-primary)] border-4 border-[var(--bg-secondary)]" />
 
-                      <div className="bg-[var(--bg-primary)] rounded-2xl p-6 border border-[var(--border-color)] hover:border-green-500 transition-colors">
+                      <div className="bg-[var(--bg-primary)] rounded-xl p-6 border border-[var(--border-color)] hover:border-green-500 transition-colors">
                         <div className="flex flex-wrap items-center gap-2 text-sm text-[var(--text-muted)] mb-2">
                           <span className="flex items-center gap-1">
                             <Calendar size={14} />

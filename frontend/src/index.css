@@ -20,7 +20,12 @@
     --text-secondary: #475569;
     --text-muted: #5b6779; /* 5.2:1+ on all light backgrounds */
     --accent-primary: #2563eb; /* 4.7:1+ so it works as link text */
-    --accent-secondary: #6366f1;
+    --accent-hover: #1d4ed8;
+    --accent-contrast: #ffffff; /* text on solid accent: 5.2:1 */
+    --accent-soft: #eff6ff;
+    --accent-secondary: #6366f1; /* legacy, being phased out (see DESIGN.md) */
+    --success: #15803d;
+    --error: #b91c1c;
     --border-color: #e2e8f0;
   }
 
@@ -32,7 +37,12 @@
     --text-secondary: #cbd5e1;
     --text-muted: #94a3b8; /* 5.7:1+ on dark backgrounds */
     --accent-primary: #60a5fa;
-    --accent-secondary: #818cf8;
+    --accent-hover: #93c5fd;
+    --accent-contrast: #0f172a; /* dark text on light-blue buttons: 7:1 */
+    --accent-soft: #1e3a8a33;
+    --accent-secondary: #818cf8; /* legacy, being phased out (see DESIGN.md) */
+    --success: #4ade80;
+    --error: #f87171;
     --border-color: #334155;
   }
 

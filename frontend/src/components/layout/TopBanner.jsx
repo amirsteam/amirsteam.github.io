@@ -1,6 +1,5 @@
-import { useState } from 'react'
-import { motion } from 'framer-motion'
-import { Mail, Phone, Sparkles } from 'lucide-react'
+import { Mail, Phone } from 'lucide-react'
+
 
 // Contact information
 const CONTACT_INFO = {
@@ -37,215 +36,42 @@ const WhatsAppIcon = ({ size = 16, className = '' }) => (
   </svg>
 )
 
+// Plain contact strip, desktop only (hidden on phones; the mobile menu has
+// WhatsApp and Call buttons instead). No animation, per DESIGN.md.
 export default function TopBanner() {
-  const [isHovered, setIsHovered] = useState(false)
-
-
-  const iconButtonVariants = {
-    initial: { scale: 1 },
-    hover: {
-      scale: 1.15,
-      transition: { type: 'spring', stiffness: 400, damping: 10 }
-    },
-    tap: { scale: 0.95 }
-  }
-
-  const pulseAnimation = {
-    scale: [1, 1.05, 1],
-    transition: {
-      duration: 2,
-      repeat: Infinity,
-      ease: 'easeInOut'
-    }
-  }
-
-  const shimmerAnimation = {
-    backgroundPosition: ['200% 0', '-200% 0'],
-    transition: {
-      duration: 3,
-      repeat: Infinity,
-      ease: 'linear'
-    }
-  }
+  const linkClass = 'inline-flex items-center gap-1.5 text-slate-300 hover:text-white transition-colors'
 
   return (
-    <motion.div
-      initial={{ y: -50, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.3, ease: 'easeOut' }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      className="hidden md:block fixed top-0 left-0 right-0 z-[60] bg-gradient-to-r from-slate-900 via-purple-900 to-slate-900 border-b border-purple-500/20"
-    >
-      {/* Animated background shimmer */}
-      <motion.div
-        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent"
-        style={{ backgroundSize: '200% 100%' }}
-        animate={shimmerAnimation}
-      />
+    <div className="hidden md:block fixed top-0 left-0 right-0 z-[60] bg-slate-900 border-b border-slate-800 text-sm">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-10">
+          <a href={`mailto:${CONTACT_INFO.email}`} className={linkClass}>
+            <Mail size={14} aria-hidden="true" />
+            {CONTACT_INFO.email}
+          </a>
 
-      {/* Sparkle effects */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <motion.div
-          className="absolute top-1 left-[10%] text-yellow-400/60"
-          animate={{
-            opacity: [0.3, 1, 0.3],
-            scale: [0.8, 1.2, 0.8],
-            rotate: [0, 180, 360]
-          }}
-          transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-        >
-          <Sparkles size={10} />
-        </motion.div>
-        <motion.div
-          className="absolute top-2 right-[15%] text-blue-400/60"
-          animate={{
-            opacity: [0.5, 1, 0.5],
-            scale: [1, 1.3, 1],
-            rotate: [0, -180, -360]
-          }}
-          transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-        >
-          <Sparkles size={8} />
-        </motion.div>
-      </div>
-
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-9 md:h-10 text-xs md:text-sm">
-
-          {/* Left - Email with animation */}
-          <motion.a
-            href={`mailto:${CONTACT_INFO.email}`}
-                className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors group"
-                whileHover={{ x: 3 }}
-                transition={{ type: 'spring', stiffness: 300 }}
-              >
-                <motion.div
-                  className="relative"
-                  animate={isHovered ? {} : pulseAnimation}
-                >
-                  <Mail size={14} className="text-purple-400 group-hover:text-purple-300" />
-                  {/* Ping effect */}
-                  <motion.span
-                    className="absolute inset-0 rounded-full bg-purple-400"
-                    animate={{ scale: [1, 2], opacity: [0.5, 0] }}
-                    transition={{ duration: 1.5, repeat: Infinity }}
-                  />
-                </motion.div>
-                <span className="hidden sm:inline font-medium tracking-wide">
-                  {CONTACT_INFO.email}
-                </span>
-                <span className="sm:hidden font-medium">Email</span>
-              </motion.a>
-
-              {/* Center - Availability badge (hidden on mobile) */}
-              <motion.div
-                className="hidden md:flex items-center gap-2 text-xs"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.5 }}
-              >
-                <motion.span
-                  className="relative flex h-2 w-2"
-                  animate={{ scale: [1, 1.2, 1] }}
-                  transition={{ duration: 1.5, repeat: Infinity }}
-                >
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-                </motion.span>
-                <span className="text-green-400 font-medium">Available for Projects</span>
-              </motion.div>
-
-              {/* Right - Phone with WhatsApp & Viber */}
-              <div className="flex items-center gap-1 sm:gap-3">
-                {/* Phone number (hidden on small mobile) */}
-                <motion.a
-                  href={`tel:${CONTACT_INFO.phone}`}
-                  className="hidden sm:flex items-center gap-2 text-gray-300 hover:text-white transition-colors group"
-                  whileHover={{ x: -3 }}
-                  transition={{ type: 'spring', stiffness: 300 }}
-                >
-                  <motion.div animate={isHovered ? {} : pulseAnimation}>
-                    <Phone size={14} className="text-green-400 group-hover:text-green-300" />
-                  </motion.div>
-                  <span className="font-medium tracking-wide">{CONTACT_INFO.phoneDisplay}</span>
-                </motion.a>
-
-                {/* Divider */}
-                <span className="hidden sm:block w-px h-4 bg-gray-600"></span>
-
-                {/* Action buttons */}
-                <div className="flex items-center gap-1">
-                  {/* WhatsApp */}
-                  <motion.a
-                    href={CONTACT_INFO.whatsappUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    variants={iconButtonVariants}
-                    initial="initial"
-                    whileHover="hover"
-                    whileTap="tap"
-                    className="relative flex items-center gap-1.5 px-2 py-1.5 rounded-full bg-green-500/20 hover:bg-green-500/30 text-green-400 hover:text-green-300 transition-colors group"
-                    title="Chat on WhatsApp"
-                  >
-                    <WhatsAppIcon size={14} />
-                    <span className="hidden lg:inline text-xs font-medium">WhatsApp</span>
-                    {/* Glow effect */}
-                    <motion.span
-                      className="absolute inset-0 rounded-full bg-green-400/20 blur-md"
-                      initial={{ opacity: 0 }}
-                      whileHover={{ opacity: 1 }}
-                    />
-                  </motion.a>
-
-                  {/* Viber */}
-                  <motion.a
-                    href={CONTACT_INFO.viberUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    variants={iconButtonVariants}
-                    initial="initial"
-                    whileHover="hover"
-                    whileTap="tap"
-                    className="relative flex items-center gap-1.5 px-2 py-1.5 rounded-full bg-purple-500/20 hover:bg-purple-500/30 text-purple-400 hover:text-purple-300 transition-colors group"
-                    title="Chat on Viber"
-                  >
-                    <ViberIcon size={14} />
-                    <span className="hidden lg:inline text-xs font-medium">Viber</span>
-                    {/* Glow effect */}
-                    <motion.span
-                      className="absolute inset-0 rounded-full bg-purple-400/20 blur-md"
-                      initial={{ opacity: 0 }}
-                      whileHover={{ opacity: 1 }}
-                    />
-                  </motion.a>
-
-                  {/* Call button (mobile only) */}
-                  <motion.a
-                    href={`tel:${CONTACT_INFO.phone}`}
-                    variants={iconButtonVariants}
-                    initial="initial"
-                    whileHover="hover"
-                    whileTap="tap"
-                    className="sm:hidden relative flex items-center gap-1.5 px-2 py-1.5 rounded-full bg-blue-500/20 hover:bg-blue-500/30 text-blue-400 hover:text-blue-300 transition-colors"
-                    title="Call Now"
-                  >
-                    <Phone size={14} />
-                  </motion.a>
-                </div>
-              </div>
-            </div>
+          <div className="flex items-center gap-5">
+            <a href={`tel:${CONTACT_INFO.phone}`} className={linkClass}>
+              <Phone size={14} aria-hidden="true" />
+              {CONTACT_INFO.phoneDisplay}
+            </a>
+            <a
+              href={CONTACT_INFO.whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={linkClass}
+              aria-label="Chat on WhatsApp (opens in new tab)"
+            >
+              <WhatsAppIcon size={14} />
+              WhatsApp
+            </a>
+            <a href={CONTACT_INFO.viberUrl} className={linkClass} aria-label="Chat on Viber">
+              <ViberIcon size={14} />
+              Viber
+            </a>
           </div>
-
-          {/* Bottom gradient line */}
-          <motion.div
-            className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-purple-500 to-transparent"
-            animate={{
-              opacity: [0.3, 0.8, 0.3],
-            }}
-            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-          />
-        </motion.div>
+        </div>
+      </div>
+    </div>
   )
 }
-

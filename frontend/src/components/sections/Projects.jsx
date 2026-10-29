@@ -49,17 +49,16 @@ export default function Projects() {
           className="max-w-6xl mx-auto"
         >
           {/* Section Header */}
-          <motion.div variants={itemVariants} className="text-center mb-16">
+          <motion.div variants={itemVariants} className="mb-12 md:mb-16 max-w-2xl">
             <span className="text-sm font-semibold text-[var(--accent-primary)] uppercase tracking-wider">
               Portfolio
             </span>
-            <h2 className="mt-2 text-3xl sm:text-4xl md:text-5xl font-bold text-[var(--text-primary)]">
+            <h2 className="mt-2 text-3xl md:text-4xl font-bold tracking-tight text-[var(--text-primary)]">
               Featured Projects
             </h2>
-            <p className="mt-4 text-lg text-[var(--text-secondary)] max-w-2xl mx-auto">
+            <p className="mt-4 text-lg text-[var(--text-secondary)]">
               Real-world projects that demonstrate my expertise in building scalable, production-ready applications.
             </p>
-            <div className="mt-4 w-20 h-1 bg-gradient-to-r from-blue-500 to-purple-600 mx-auto rounded-full" />
           </motion.div>
 
           {/* Filter Buttons */}
@@ -68,11 +67,9 @@ export default function Projects() {
               <motion.button
                 key={category}
                 onClick={() => setActiveFilter(category)}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
                 className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
                   activeFilter === category
-                    ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg shadow-blue-500/25'
+                    ? 'bg-[var(--accent-soft)] text-[var(--accent-primary)] border border-[var(--accent-primary)]'
                     : 'bg-[var(--bg-primary)] text-[var(--text-secondary)] hover:text-[var(--accent-primary)] border border-[var(--border-color)]'
                 }`}
               >
@@ -90,7 +87,7 @@ export default function Projects() {
                 key={project?.id || `project-${index}`}
                 layout
                 variants={itemVariants}
-                className="group relative flex flex-col bg-[var(--bg-primary)] rounded-2xl overflow-hidden border border-[var(--border-color)] hover:border-[var(--accent-primary)] transition-colors duration-300"
+                className="group relative flex flex-col bg-[var(--bg-primary)] rounded-xl overflow-hidden border border-[var(--border-color)] hover:border-[var(--accent-primary)] transition-colors duration-300"
               >
                 {/* Thumbnail: real screenshot, or a plain code panel when there is none */}
                 <div className="relative aspect-video overflow-hidden border-b border-[var(--border-color)] bg-[var(--bg-tertiary)]">
@@ -102,7 +99,7 @@ export default function Projects() {
                       height={540}
                       loading="lazy"
                       decoding="async"
-                      className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
+                      className="w-full h-full object-cover object-top"
                     />
                   ) : (
                     <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 text-[var(--text-secondary)]">
@@ -209,9 +206,7 @@ export default function Projects() {
               href={personalInfo.social.github}
               target="_blank"
               rel="noopener noreferrer"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold hover:shadow-lg hover:shadow-blue-500/25 transition-shadow"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-[var(--accent-primary)] text-[var(--accent-contrast)] hover:bg-[var(--accent-hover)] font-semibold transition-colors"
             >
               <Github size={20} aria-hidden="true" />
               More on GitHub

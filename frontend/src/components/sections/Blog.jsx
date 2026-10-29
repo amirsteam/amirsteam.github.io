@@ -43,17 +43,16 @@ export default function Blog() {
           className="max-w-6xl mx-auto"
         >
           {/* Section Header */}
-          <motion.div variants={itemVariants} className="text-center mb-16">
+          <motion.div variants={itemVariants} className="mb-12 md:mb-16 max-w-2xl">
             <span className="text-sm font-semibold text-[var(--accent-primary)] uppercase tracking-wider">
               Blog & Articles
             </span>
-            <h2 className="mt-2 text-3xl sm:text-4xl md:text-5xl font-bold text-[var(--text-primary)]">
+            <h2 className="mt-2 text-3xl md:text-4xl font-bold tracking-tight text-[var(--text-primary)]">
               Latest Insights
             </h2>
-            <p className="mt-4 text-lg text-[var(--text-secondary)] max-w-2xl mx-auto">
+            <p className="mt-4 text-lg text-[var(--text-secondary)]">
               Sharing knowledge about MERN stack development, best practices, and industry insights.
             </p>
-            <div className="mt-4 w-20 h-1 bg-gradient-to-r from-blue-500 to-purple-600 mx-auto rounded-full" />
           </motion.div>
 
           {/* Featured Post */}
@@ -61,11 +60,10 @@ export default function Blog() {
             <motion.div variants={itemVariants} className="mb-12">
               <Link to={`/blog/${blogPosts[0]?.slug || 'post'}`}>
                 <motion.article
-                  whileHover={{ y: -5 }}
-                  className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-blue-500/10 to-purple-600/10 border border-[var(--border-color)] hover:border-[var(--accent-primary)] transition-colors"
+                  className="relative overflow-hidden rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] hover:border-[var(--accent-primary)] transition-colors"
                 >
                   <div className="grid md:grid-cols-2 gap-8 p-8">
-                    <div className="aspect-video rounded-2xl overflow-hidden bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                    <div className="aspect-video rounded-xl overflow-hidden bg-[var(--bg-tertiary)] flex items-center justify-center">
                       <span className="text-6xl">📚</span>
                     </div>
                     
@@ -118,11 +116,10 @@ export default function Blog() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={isInView ? { opacity: 1, y: 0 } : {}}
                   transition={{ delay: index * 0.1 }}
-                  whileHover={{ y: -5 }}
-                  className="h-full bg-[var(--bg-primary)] rounded-2xl overflow-hidden border border-[var(--border-color)] hover:border-[var(--accent-primary)] transition-colors"
+                  className="h-full bg-[var(--bg-primary)] rounded-xl overflow-hidden border border-[var(--border-color)] hover:border-[var(--accent-primary)] transition-colors"
                 >
                   {/* Thumbnail */}
-                  <div className="aspect-video bg-gradient-to-br from-blue-500/20 to-purple-600/20 flex items-center justify-center">
+                  <div className="aspect-video bg-[var(--bg-tertiary)] flex items-center justify-center">
                     <span className="text-5xl">
                       {post?.category === 'Development' && '💻'}
                       {post?.category === 'Security' && '🔐'}
@@ -182,9 +179,7 @@ export default function Blog() {
           <motion.div variants={itemVariants} className="text-center mt-12">
             <Link to="/blog">
               <motion.span
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold hover:shadow-lg hover:shadow-blue-500/25 transition-shadow"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-[var(--accent-primary)] text-[var(--accent-contrast)] hover:bg-[var(--accent-hover)] font-semibold transition-colors"
               >
                 View All Articles
                 <ArrowRight size={20} />

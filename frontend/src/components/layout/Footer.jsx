@@ -8,7 +8,6 @@ import {
   Mail, 
   MapPin, 
   Phone,
-  Heart,
   ArrowUp
 } from 'lucide-react'
 import { personalInfo, navLinks } from '../../data'
@@ -35,10 +34,10 @@ export default function Footer() {
           {/* Brand Section */}
           <div className="lg:col-span-2">
             <Link to="/" className="inline-block">
-              <span className="text-2xl font-bold bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
+              <span className="text-2xl font-bold tracking-tight text-[var(--text-primary)]">
                 Amir
               </span>
-              <span className="text-2xl font-bold text-[var(--text-primary)]">.</span>
+              <span className="text-2xl font-bold text-[var(--accent-primary)]">.</span>
             </Link>
             <p className="mt-4 text-[var(--text-secondary)] max-w-md">
               {personalInfo.tagline}
@@ -117,8 +116,6 @@ export default function Footer() {
                 href={social.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                whileHover={{ scale: 1.1, y: -2 }}
-                whileTap={{ scale: 0.95 }}
                 className="p-2 rounded-lg bg-[var(--bg-tertiary)] text-[var(--text-secondary)] hover:text-[var(--accent-primary)] hover:bg-[var(--bg-primary)] transition-colors"
                 aria-label={social.name}
               >
@@ -130,9 +127,7 @@ export default function Footer() {
           {/* Scroll to Top */}
           <motion.button
             onClick={scrollToTop}
-            whileHover={{ scale: 1.1, y: -2 }}
-            whileTap={{ scale: 0.95 }}
-            className="p-2 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white"
+            className="p-2 rounded-lg bg-[var(--accent-soft)] text-[var(--accent-primary)]"
             aria-label="Scroll to top"
           >
             <ArrowUp size={20} />
@@ -147,21 +142,11 @@ export default function Footer() {
             <p>
               © {currentYear} {personalInfo.name}. All rights reserved.
             </p>
-            <p className="flex items-center gap-1">
-              Made with <Heart size={14} className="text-red-500 fill-red-500" /> using MERN Stack
-            </p>
+            <p>Built with React and Tailwind CSS</p>
           </div>
         </div>
       </div>
 
-      {/* Admin Dashboard Notice */}
-      <div className="bg-gradient-to-r from-blue-500 to-purple-600 py-2">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="text-center text-white text-sm">
-            This website is powered by my own custom MERN Admin Dashboard
-          </p>
-        </div>
-      </div>
     </footer>
   )
 }

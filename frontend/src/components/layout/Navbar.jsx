@@ -50,9 +50,8 @@ export default function Navbar() {
     <header
       className={cn(
         'fixed top-0 md:top-10 left-0 right-0 z-50 transition-all duration-300',
-        scrolled || isOpen
-          ? 'bg-[var(--bg-primary)] backdrop-blur-lg shadow-lg border-b border-[var(--border-color)]'
-          : 'bg-[var(--bg-primary)]/80 backdrop-blur-md md:bg-transparent md:backdrop-blur-none'
+        'bg-[var(--bg-primary)] border-b border-[var(--border-color)]',
+        (scrolled || isOpen) && 'shadow-sm'
       )}
     >
       <nav className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
@@ -60,14 +59,12 @@ export default function Navbar() {
           {/* Logo */}
           <Link to="/" onClick={() => setIsOpen(false)} className="flex items-center space-x-2 group">
             <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
               className="flex items-center"
             >
-              <span className="text-2xl font-bold bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
+              <span className="text-2xl font-bold tracking-tight text-[var(--text-primary)]">
                 Amir
               </span>
-              <span className="text-2xl font-bold text-[var(--text-primary)]">.</span>
+              <span className="text-2xl font-bold text-[var(--accent-primary)]">.</span>
             </motion.div>
           </Link>
 
@@ -95,8 +92,6 @@ export default function Navbar() {
           <div className="flex items-center space-x-2">
             {/* Theme Toggle */}
             <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
               onClick={toggleTheme}
               className="p-2 rounded-lg bg-[var(--bg-secondary)] text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors"
               aria-label="Toggle theme"
@@ -128,12 +123,10 @@ export default function Navbar() {
 
             {/* Resume Download - Hidden on mobile */}
             <motion.a
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
               href="/resume.html"
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white font-medium text-sm hover:shadow-lg hover:shadow-blue-500/25 transition-shadow"
+              className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-lg bg-[var(--accent-primary)] text-[var(--accent-contrast)] hover:bg-[var(--accent-hover)] font-medium text-sm transition-colors"
             >
               <Download size={16} />
               <span>Resume</span>
@@ -141,8 +134,6 @@ export default function Navbar() {
 
             {/* Mobile Menu Button */}
             <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
               onClick={() => setIsOpen(!isOpen)}
               className="md:hidden p-2 rounded-lg bg-[var(--bg-secondary)] text-[var(--text-secondary)]"
               aria-label="Toggle menu"
@@ -189,7 +180,7 @@ export default function Navbar() {
                   href="/resume.html"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-4 py-3 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white font-medium text-sm"
+                  className="flex items-center gap-2 px-4 py-3 rounded-lg bg-[var(--accent-primary)] text-[var(--accent-contrast)] hover:bg-[var(--accent-hover)] font-medium text-sm"
                 >
                   <Download size={16} />
                   <span>View Resume</span>

@@ -19,13 +19,13 @@ export default function NotFound() {
           <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
             <Link
               to="/"
-              className="px-6 py-3 rounded-xl bg-[var(--accent-primary)] text-white font-semibold"
+              className="px-6 py-3 rounded-lg bg-[var(--accent-primary)] text-[var(--accent-contrast)] hover:bg-[var(--accent-hover)] font-semibold transition-colors"
             >
               Go to home page
             </Link>
             <Link
               to="/contact"
-              className="px-6 py-3 rounded-xl border border-[var(--border-color)] text-[var(--text-primary)] font-semibold hover:border-[var(--accent-primary)] transition-colors"
+              className="px-6 py-3 rounded-lg border border-[var(--border-color)] text-[var(--text-primary)] font-semibold hover:border-[var(--accent-primary)] transition-colors"
             >
               Contact me
             </Link>

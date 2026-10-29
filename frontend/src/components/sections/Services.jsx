@@ -51,17 +51,16 @@ export default function Services() {
           className="max-w-6xl mx-auto"
         >
           {/* Section Header */}
-          <motion.div variants={itemVariants} className="text-center mb-16">
+          <motion.div variants={itemVariants} className="mb-12 md:mb-16 max-w-2xl">
             <span className="text-sm font-semibold text-[var(--accent-primary)] uppercase tracking-wider">
               What I Offer
             </span>
-            <h2 className="mt-2 text-3xl sm:text-4xl md:text-5xl font-bold text-[var(--text-primary)]">
+            <h2 className="mt-2 text-3xl md:text-4xl font-bold tracking-tight text-[var(--text-primary)]">
               Solutions & Packages
             </h2>
-            <p className="mt-4 text-lg text-[var(--text-secondary)] max-w-2xl mx-auto">
+            <p className="mt-4 text-lg text-[var(--text-secondary)]">
               Complete digital solutions tailored to your needs. All packages are customizable to fit your specific requirements.
             </p>
-            <div className="mt-4 w-20 h-1 bg-gradient-to-r from-blue-500 to-purple-600 mx-auto rounded-full" />
           </motion.div>
 
           {/* Services Grid */}
@@ -73,27 +72,18 @@ export default function Services() {
                 <motion.div
                   key={service?.id || `service-${index}`}
                   variants={itemVariants}
-                  whileHover={{ y: -10 }}
-                  className={`relative rounded-2xl overflow-hidden ${
-                    service?.popular
-                      ? 'bg-gradient-to-br from-blue-500 to-purple-600 p-[2px]'
-                      : ''
-                  }`}
+                  className="relative rounded-xl overflow-hidden"
                 >
                   {service?.popular && (
-                    <div className="absolute top-4 right-4 z-10 px-3 py-1 rounded-full bg-white text-purple-600 text-xs font-bold">
+                    <div className="absolute top-4 right-4 z-10 px-3 py-1 rounded-md bg-[var(--accent-primary)] text-[var(--accent-contrast)] text-xs font-semibold">
                       Most Popular
                     </div>
                   )}
                   
-                  <div className={`h-full bg-[var(--bg-secondary)] rounded-2xl ${service?.popular ? '' : 'border border-[var(--border-color)]'} p-8`}>
+                  <div className={`h-full bg-[var(--bg-secondary)] rounded-xl ${service?.popular ? 'border-2 border-[var(--accent-primary)]' : 'border border-[var(--border-color)]'} p-8`}>
                     {/* Icon */}
-                    <div className={`inline-flex p-4 rounded-2xl ${
-                      service?.popular
-                        ? 'bg-gradient-to-r from-blue-500 to-purple-600'
-                        : 'bg-[var(--bg-tertiary)]'
-                    }`}>
-                      <IconComponent className={`w-8 h-8 ${service?.popular ? 'text-white' : 'text-[var(--accent-primary)]'}`} />
+                    <div className="inline-flex p-3 rounded-lg bg-[var(--accent-soft)]">
+                      <IconComponent className="w-6 h-6 text-[var(--accent-primary)]" aria-hidden="true" />
                     </div>
 
                     {/* Title & Description */}
@@ -135,12 +125,10 @@ export default function Services() {
                     {/* CTA */}
                     <motion.a
                       href="#contact"
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      className={`mt-6 w-full inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all ${
+                      className={`mt-6 w-full inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-semibold transition-colors ${
                         service?.popular
-                          ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:shadow-lg hover:shadow-blue-500/25'
-                          : 'bg-[var(--bg-tertiary)] text-[var(--text-primary)] hover:bg-[var(--accent-primary)] hover:text-white'
+                          ? 'bg-[var(--accent-primary)] text-[var(--accent-contrast)] hover:bg-[var(--accent-hover)]'
+                          : 'bg-[var(--bg-tertiary)] text-[var(--text-primary)] border border-[var(--border-color)] hover:border-[var(--accent-primary)]'
                       }`}
                     >
                       Get Started
@@ -155,7 +143,7 @@ export default function Services() {
           {/* Custom Solution CTA */}
           <motion.div
             variants={itemVariants}
-            className="mt-16 text-center p-8 rounded-2xl bg-gradient-to-r from-blue-500/10 to-purple-600/10 border border-[var(--border-color)]"
+            className="mt-16 text-center p-8 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)]"
           >
             <h3 className="text-2xl font-bold text-[var(--text-primary)] mb-4">
               Need a Custom Solution?
@@ -165,9 +153,7 @@ export default function Services() {
             </p>
             <motion.a
               href="#contact"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold hover:shadow-lg hover:shadow-blue-500/25 transition-shadow"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-[var(--accent-primary)] text-[var(--accent-contrast)] hover:bg-[var(--accent-hover)] font-semibold transition-colors"
             >
               Let's Discuss Your Project
               <ArrowRight size={20} />
