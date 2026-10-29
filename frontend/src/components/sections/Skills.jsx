@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { motion, useInView } from 'framer-motion'
 import { useRef, useState } from 'react'
 import { Code2, Palette, Film, GraduationCap } from 'lucide-react'
@@ -19,7 +20,9 @@ const defaultSkill = {
   items: []
 }
 
-export default function Skills() {
+export default function Skills({ isPage = false }) {
+  // As a standalone page the section title is the page h1
+  const Heading = isPage ? 'h1' : 'h2'
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
   const [activeCategory, setActiveCategory] = useState('mernEngineering')
@@ -70,9 +73,9 @@ export default function Skills() {
             <span className="text-sm font-semibold text-[var(--accent-primary)] uppercase tracking-wider">
               Expertise
             </span>
-            <h2 className="mt-2 text-3xl md:text-4xl font-bold tracking-tight text-[var(--text-primary)]">
+            <Heading className="mt-2 text-3xl md:text-4xl font-bold tracking-tight text-[var(--text-primary)]">
               My Skill Pillars
-            </h2>
+            </Heading>
             <p className="mt-4 text-lg text-[var(--text-secondary)]">
               Four key areas of expertise that I bring to every project, combining technical depth with creative vision.
             </p>
@@ -183,12 +186,12 @@ export default function Skills() {
                     <ul className="space-y-2">
                       {activeSkill.usedIn.map((projectName) => (
                         <li key={projectName}>
-                          <a
-                            href="#projects"
+                          <Link
+                            to="/projects"
                             className="text-[var(--accent-primary)] font-medium hover:underline"
                           >
                             {projectName}
-                          </a>
+                          </Link>
                         </li>
                       ))}
                     </ul>

@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { motion, useInView } from 'framer-motion'
 import { useRef, useState } from 'react'
 import { School, ShoppingCart, Newspaper, Check, ArrowRight, Briefcase } from 'lucide-react'
@@ -11,7 +12,9 @@ const iconMap = {
   Briefcase
 }
 
-export default function Services() {
+export default function Services({ isPage = false }) {
+  // As a standalone page the section title is the page h1
+  const Heading = isPage ? 'h1' : 'h2'
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
   // Normalize static data on init
@@ -55,9 +58,9 @@ export default function Services() {
             <span className="text-sm font-semibold text-[var(--accent-primary)] uppercase tracking-wider">
               What I Offer
             </span>
-            <h2 className="mt-2 text-3xl md:text-4xl font-bold tracking-tight text-[var(--text-primary)]">
+            <Heading className="mt-2 text-3xl md:text-4xl font-bold tracking-tight text-[var(--text-primary)]">
               Solutions & Packages
-            </h2>
+            </Heading>
             <p className="mt-4 text-lg text-[var(--text-secondary)]">
               Complete digital solutions tailored to your needs. All packages are customizable to fit your specific requirements.
             </p>
@@ -123,8 +126,8 @@ export default function Services() {
                     </div>
 
                     {/* CTA */}
-                    <motion.a
-                      href="#contact"
+                    <Link
+                      to="/contact"
                       className={`mt-6 w-full inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-semibold transition-colors ${
                         service?.popular
                           ? 'bg-[var(--accent-primary)] text-[var(--accent-contrast)] hover:bg-[var(--accent-hover)]'
@@ -133,7 +136,7 @@ export default function Services() {
                     >
                       Get Started
                       <ArrowRight size={18} />
-                    </motion.a>
+                    </Link>
                   </div>
                 </motion.div>
               )
@@ -151,13 +154,13 @@ export default function Services() {
             <p className="text-[var(--text-secondary)] max-w-2xl mx-auto mb-6">
               Every project is unique. Let's discuss your specific requirements and create a tailored solution that perfectly fits your needs and budget.
             </p>
-            <motion.a
-              href="#contact"
+            <Link
+              to="/contact"
               className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-[var(--accent-primary)] text-[var(--accent-contrast)] hover:bg-[var(--accent-hover)] font-semibold transition-colors"
             >
               Let's Discuss Your Project
               <ArrowRight size={20} />
-            </motion.a>
+            </Link>
           </motion.div>
         </motion.div>
       </div>

@@ -358,10 +358,10 @@ export const blogPosts = [
 
 export const navLinks = [
   { name: 'Home', path: '/' },
-  { name: 'Projects', path: '/#projects' },
-  { name: 'Services', path: '/#services' },
-  { name: 'About', path: '/#about' },
-  { name: 'Skills', path: '/#skills' },
+  { name: 'Projects', path: '/projects' },
+  { name: 'Services', path: '/services' },
+  { name: 'About', path: '/about' },
+  { name: 'Skills', path: '/skills' },
   // Blog is hidden until there are real posts; add { name: 'Blog', path: '/blog' } back then
   { name: 'Contact', path: '/contact' }
 ]

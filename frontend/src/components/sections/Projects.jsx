@@ -1,10 +1,13 @@
+import { Link } from 'react-router-dom'
 import { motion, useInView } from 'framer-motion'
 import { useRef, useState } from 'react'
 import { ExternalLink, Github, ChevronRight, Code2 } from 'lucide-react'
 import { projects as staticProjects, personalInfo } from '../../data'
 import { normalizeProjectArray } from '../../utils/normalizers'
 
-export default function Projects() {
+export default function Projects({ isPage = false, featuredOnly = false }) {
+  // As a standalone page the section title is the page h1
+  const Heading = isPage ? 'h1' : 'h2'
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
   const [activeFilter, setActiveFilter] = useState('All')
@@ -15,9 +18,11 @@ export default function Projects() {
   // Defensive array check
   const safeProjects = Array.isArray(projects) ? projects : []
   const categories = ['All', ...new Set(safeProjects.map((p) => p?.category || 'Other').filter(Boolean))]
-  const filteredProjects = activeFilter === 'All'
-    ? safeProjects
-    : safeProjects.filter((p) => p?.category === activeFilter)
+  const filteredProjects = featuredOnly
+    ? safeProjects.filter((p) => p?.featured).slice(0, 3)
+    : activeFilter === 'All'
+      ? safeProjects
+      : safeProjects.filter((p) => p?.category === activeFilter)
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -53,16 +58,17 @@ export default function Projects() {
             <span className="text-sm font-semibold text-[var(--accent-primary)] uppercase tracking-wider">
               Portfolio
             </span>
-            <h2 className="mt-2 text-3xl md:text-4xl font-bold tracking-tight text-[var(--text-primary)]">
+            <Heading className="mt-2 text-3xl md:text-4xl font-bold tracking-tight text-[var(--text-primary)]">
               Featured Projects
-            </h2>
+            </Heading>
             <p className="mt-4 text-lg text-[var(--text-secondary)]">
               Real-world projects that demonstrate my expertise in building scalable, production-ready applications.
             </p>
           </motion.div>
 
-          {/* Filter Buttons */}
-          <motion.div variants={itemVariants} className="flex flex-wrap justify-center gap-3 mb-12">
+          {/* Filter Buttons (full Projects page only) */}
+          {!featuredOnly && (
+          <motion.div variants={itemVariants} className="flex flex-wrap gap-3 mb-12">
             {categories.map((category) => (
               <motion.button
                 key={category}
@@ -77,6 +83,7 @@ export default function Projects() {
               </motion.button>
             ))}
           </motion.div>
+          )}
 
           {/* Projects Grid */}
           <motion.div layout className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -200,8 +207,17 @@ export default function Projects() {
             )})}
           </motion.div>
 
-          {/* View All Projects CTA */}
-          <motion.div variants={itemVariants} className="text-center mt-12">
+          {/* CTA: home links to the Projects page; the Projects page links to GitHub */}
+          <motion.div variants={itemVariants} className="mt-12">
+            {featuredOnly ? (
+              <Link
+                to="/projects"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-[var(--border-color)] text-[var(--text-primary)] font-semibold hover:border-[var(--accent-primary)] transition-colors"
+              >
+                See all projects
+                <ChevronRight size={20} aria-hidden="true" />
+              </Link>
+            ) : (
             <motion.a
               href={personalInfo.social.github}
               target="_blank"
@@ -212,6 +228,7 @@ export default function Projects() {
               More on GitHub
               <ChevronRight size={20} aria-hidden="true" />
             </motion.a>
+            )}
           </motion.div>
         </motion.div>
       </div>

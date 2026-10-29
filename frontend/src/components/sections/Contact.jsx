@@ -45,7 +45,9 @@ function buildWhatsAppLink(data) {
   return `https://wa.me/${phone}?text=${encodeURIComponent(text)}`
 }
 
-export default function Contact() {
+export default function Contact({ isPage = false }) {
+  // As a standalone page the section title is the page h1
+  const Heading = isPage ? 'h1' : 'h2'
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
   const [formData, setFormData] = useState({
@@ -138,9 +140,9 @@ export default function Contact() {
             <span className="text-sm font-semibold text-[var(--accent-primary)] uppercase tracking-wider">
               Get In Touch
             </span>
-            <h2 className="mt-2 text-3xl md:text-4xl font-bold tracking-tight text-[var(--text-primary)]">
+            <Heading className="mt-2 text-3xl md:text-4xl font-bold tracking-tight text-[var(--text-primary)]">
               Let's Work Together
-            </h2>
+            </Heading>
             <p className="mt-4 text-lg text-[var(--text-secondary)]">
               Have a project in mind or want to discuss opportunities? I'd love to hear from you.
             </p>

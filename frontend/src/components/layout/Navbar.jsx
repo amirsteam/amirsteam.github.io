@@ -21,6 +21,10 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  // GitHub Pages serves pages as /projects/, so ignore a trailing slash
+  const currentPath = location.pathname.replace(/\/+$/, '') || '/'
+  const isActive = (path) => currentPath === path
+
   // Close the mobile menu when a link is used (instead of an effect on location)
   const handleNavClick = (e, path) => {
     e.preventDefault()
@@ -75,10 +79,11 @@ export default function Navbar() {
                 key={link.name}
                 href={link.path}
                 onClick={(e) => handleNavClick(e, link.path)}
+                aria-current={isActive(link.path) ? 'page' : undefined}
                 className={cn(
                   'px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200',
                   'hover:bg-[var(--bg-secondary)] hover:text-[var(--accent-primary)]',
-                  location.pathname === link.path
+                  isActive(link.path)
                     ? 'text-[var(--accent-primary)]'
                     : 'text-[var(--text-secondary)]'
                 )}
@@ -159,13 +164,14 @@ export default function Navbar() {
                     key={link.name}
                     href={link.path}
                     onClick={(e) => handleNavClick(e, link.path)}
+                aria-current={isActive(link.path) ? 'page' : undefined}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.03 }}
                     className={cn(
                       'block px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200',
                       'hover:bg-[var(--bg-secondary)] hover:text-[var(--accent-primary)]',
-                      location.pathname === link.path
+                      isActive(link.path)
                         ? 'bg-[var(--bg-secondary)] text-[var(--accent-primary)]'
                         : 'text-[var(--text-secondary)]'
                     )}

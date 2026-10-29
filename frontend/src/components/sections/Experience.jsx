@@ -4,7 +4,9 @@ import { Briefcase, GraduationCap, MapPin, Calendar } from 'lucide-react'
 import { experience as staticExperience, education } from '../../data'
 import { normalizeExperienceArray } from '../../utils/normalizers'
 
-export default function Experience() {
+export default function Experience({ isPage = false }) {
+  // As a standalone page the section title is the page h1
+  const Heading = isPage ? 'h1' : 'h2'
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
   // Normalize static data on init to ensure consistent shape
@@ -49,9 +51,9 @@ export default function Experience() {
             <span className="text-sm font-semibold text-[var(--accent-primary)] uppercase tracking-wider">
               Career Path
             </span>
-            <h2 className="mt-2 text-3xl md:text-4xl font-bold tracking-tight text-[var(--text-primary)]">
+            <Heading className="mt-2 text-3xl md:text-4xl font-bold tracking-tight text-[var(--text-primary)]">
               Experience & Education
-            </h2>
+            </Heading>
             <p className="mt-4 text-lg text-[var(--text-secondary)]">
               My journey in technology, combining professional experience with continuous learning.
             </p>

@@ -11,9 +11,7 @@ export default function ContactPage() {
 
   return (
     <>
-      <div className="pt-8">
-        <Contact />
-      </div>
+      <Contact isPage />
     </>
   )
 }

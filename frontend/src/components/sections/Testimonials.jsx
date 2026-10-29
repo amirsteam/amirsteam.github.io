@@ -6,7 +6,9 @@ import { normalizeTestimonialArray } from '../../utils/normalizers'
 
 // Testimonials section component with defensive data handling
 // Last updated: 2026-01-08
-export default function Testimonials() {
+export default function Testimonials({ isPage = false }) {
+  // As a standalone page the section title is the page h1
+  const Heading = isPage ? 'h1' : 'h2'
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -72,9 +74,9 @@ export default function Testimonials() {
             <span className="text-sm font-semibold text-[var(--accent-primary)] uppercase tracking-wider">
               Testimonials
             </span>
-            <h2 className="mt-2 text-3xl md:text-4xl font-bold tracking-tight text-[var(--text-primary)]">
+            <Heading className="mt-2 text-3xl md:text-4xl font-bold tracking-tight text-[var(--text-primary)]">
               What Clients Say
-            </h2>
+            </Heading>
             <p className="mt-4 text-lg text-[var(--text-secondary)]">
               Don't just take my word for it. Here's what my clients and students have to say about working with me.
             </p>

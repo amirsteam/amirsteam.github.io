@@ -1,10 +1,13 @@
+import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useInView } from 'framer-motion'
 import { useRef } from 'react'
 import { Download, Briefcase, Users, Award, Coffee } from 'lucide-react'
 import { personalInfo } from '../../data'
 
-export default function About() {
+export default function About({ isPage = false }) {
+  // As a standalone page the section title is the page h1
+  const Heading = isPage ? 'h1' : 'h2'
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 
@@ -49,9 +52,9 @@ export default function About() {
             <span className="text-sm font-semibold text-[var(--accent-primary)] uppercase tracking-wider">
               About Me
             </span>
-            <h2 className="mt-2 text-3xl md:text-4xl font-bold tracking-tight text-[var(--text-primary)]">
+            <Heading className="mt-2 text-3xl md:text-4xl font-bold tracking-tight text-[var(--text-primary)]">
               Software Engineer. Educator. Creator.
-            </h2>
+            </Heading>
           </motion.div>
 
           {/* Content Grid */}
@@ -136,12 +139,12 @@ export default function About() {
                   <Download size={20} />
                   View Resume
                 </motion.a>
-                <motion.a
-                  href="#contact"
+                <Link
+                  to="/contact"
                   className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border-2 border-[var(--border-color)] text-[var(--text-primary)] font-semibold hover:border-[var(--accent-primary)] transition-colors"
                 >
                   Let's Talk
-                </motion.a>
+                </Link>
               </div>
             </motion.div>
           </div>

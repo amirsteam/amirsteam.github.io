@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Github, Linkedin, Twitter, Mail, MapPin, ArrowRight } from 'lucide-react'
 import { personalInfo } from '../../data'
@@ -53,19 +54,19 @@ export default function Hero() {
             </motion.p>
 
             <motion.div variants={itemVariants} className="mt-8 flex flex-col sm:flex-row gap-3">
-              <a
-                href="#projects"
+              <Link
+                to="/projects"
                 className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-[var(--accent-primary)] text-[var(--accent-contrast)] font-semibold hover:bg-[var(--accent-hover)] transition-colors"
               >
                 See my projects
                 <ArrowRight size={18} aria-hidden="true" />
-              </a>
-              <a
-                href="#contact"
+              </Link>
+              <Link
+                to="/contact"
                 className="inline-flex items-center justify-center px-6 py-3 rounded-lg border border-[var(--border-color)] text-[var(--text-primary)] font-semibold hover:border-[var(--accent-primary)] transition-colors"
               >
                 Get in touch
-              </a>
+              </Link>
             </motion.div>
 
             <motion.div
