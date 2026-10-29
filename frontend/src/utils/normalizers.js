@@ -275,7 +275,7 @@ export function normalizeTestimonialArray(data) {
 /**
  * Normalize a single skill item within a category
  */
-function normalizeSkillItem(item, index = 0) {
+function normalizeSkillItem(item) {
   if (!item || typeof item !== 'object') {
     return { name: 'Skill', level: 50 }
   }
@@ -304,11 +304,11 @@ export function normalizeSkill(skill, index = 0) {
   // Handle items - could be array of objects or array of strings
   let items = []
   if (Array.isArray(skill.items)) {
-    items = skill.items.map((item, i) => {
+    items = skill.items.map((item) => {
       if (typeof item === 'string') {
         return { name: item, level: 80 }
       }
-      return normalizeSkillItem(item, i)
+      return normalizeSkillItem(item)
     })
   }
 

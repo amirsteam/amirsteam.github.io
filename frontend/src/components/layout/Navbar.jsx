@@ -21,12 +21,10 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  useEffect(() => {
-    setIsOpen(false)
-  }, [location])
-
+  // Close the mobile menu when a link is used (instead of an effect on location)
   const handleNavClick = (e, path) => {
     e.preventDefault()
+    setIsOpen(false)
     if (path.includes('#')) {
       const [basePath, hash] = path.split('#')
       if (location.pathname !== '/' && basePath === '/') {
@@ -60,7 +58,7 @@ export default function Navbar() {
       <nav className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2 group">
+          <Link to="/" onClick={() => setIsOpen(false)} className="flex items-center space-x-2 group">
             <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}

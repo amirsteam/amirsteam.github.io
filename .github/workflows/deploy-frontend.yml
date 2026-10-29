@@ -36,6 +36,11 @@ jobs:
         working-directory: frontend
         run: npm ci --legacy-peer-deps
 
+      # A lint error stops the deploy, so broken code never goes live
+      - name: Lint
+        working-directory: frontend
+        run: npm run lint
+
       - name: Build with environment variables
         working-directory: frontend
         env:

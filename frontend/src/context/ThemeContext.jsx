@@ -33,6 +33,8 @@ export function ThemeProvider({ children }) {
   )
 }
 
+// The hook lives next to its provider on purpose; this only affects hot reload in dev
+// eslint-disable-next-line react-refresh/only-export-components
 export function useTheme() {
   const context = useContext(ThemeContext)
   if (!context) {
