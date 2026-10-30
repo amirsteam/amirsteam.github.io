@@ -3,6 +3,7 @@ import AuthProvider from './AuthProvider'
 import { useAuth } from './authContext'
 import { usePageMeta } from '../hooks/usePageMeta'
 import AdminLayout from './AdminLayout'
+import SiteStatusProvider from './SiteStatusProvider'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import ResourceList from './pages/ResourceList'
@@ -33,7 +34,7 @@ export default function AdminApp() {
     <AuthProvider>
       <Routes>
         <Route path="login" element={<Login />} />
-        <Route element={<RequireAdmin><AdminLayout /></RequireAdmin>}>
+        <Route element={<RequireAdmin><SiteStatusProvider><AdminLayout /></SiteStatusProvider></RequireAdmin>}>
           <Route index element={<Dashboard />} />
           <Route path="profile" element={<ProfileEdit />} />
           <Route path="messages" element={<Messages />} />

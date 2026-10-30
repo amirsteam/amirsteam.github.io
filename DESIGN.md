@@ -27,6 +27,7 @@ token names, never raw hex values.
 | `--accent-contrast` | `#ffffff` | `#0f172a` | Text on a solid accent background |
 | `--accent-soft` | `#eff6ff` | `#1e3a8a33` | Icon tiles, selected filter, soft highlights |
 | `--success` | `#15803d` | `#4ade80` | "Available" status, sent messages |
+| `--warning` | `#b45309` | `#fbbf24` | Dashboard: saved changes not published yet |
 | `--error` | `#b91c1c` | `#f87171` | Form errors |
 
 Rules:

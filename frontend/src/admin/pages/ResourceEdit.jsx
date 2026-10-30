@@ -4,6 +4,7 @@ import { ArrowLeft, Trash2 } from 'lucide-react'
 import { resources } from '../resources'
 import { api } from '../api'
 import { useApiData } from '../useApiData'
+import { useSiteStatus } from '../siteStatus'
 import EditForm from '../components/EditForm'
 import { Loading, ErrorNote, PageTitle } from '../components/Status'
 import { btn } from '../ui'
@@ -11,15 +12,18 @@ import { btn } from '../ui'
 function Editor({ resource, config, item }) {
   const navigate = useNavigate()
   const location = useLocation()
+  const { refresh } = useSiteStatus()
   const [deleteError, setDeleteError] = useState(null)
   const isNew = !item
 
   async function save(values) {
     if (isNew) {
       const data = await api(`/admin/${resource}`, { method: 'POST', body: values })
+      refresh()
       navigate(`/admin/${resource}/${data.item.id}`, { replace: true, state: { created: true } })
     } else {
       await api(`/admin/${resource}/${item.id}`, { method: 'PUT', body: values })
+      refresh()
     }
   }
 
@@ -28,6 +32,7 @@ function Editor({ resource, config, item }) {
     if (!window.confirm(`Delete "${name}"? This cannot be undone.`)) return
     try {
       await api(`/admin/${resource}/${item.id}`, { method: 'DELETE' })
+      refresh()
       navigate(`/admin/${resource}`, { replace: true })
     } catch (err) {
       setDeleteError(err)
@@ -43,6 +48,7 @@ function Editor({ resource, config, item }) {
         key={item?.id || 'new'}
         fields={config.fields}
         item={item}
+        draftKey={`${resource}:${item?.id || 'new'}`}
         onSave={save}
         initialMessage={location.state?.created ? `Created. Press "Publish site" when you want it live.` : ''}
         extraActions={!isNew && (

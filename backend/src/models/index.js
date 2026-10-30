@@ -62,4 +62,15 @@ adminSchema.methods.checkPassword = function checkPassword(candidate) {
 
 const Admin = mongoose.model('Admin', adminSchema)
 
-module.exports = { content, Profile, Message, Admin }
+// One document that remembers when content last changed and when a publish was
+// last requested, so the dashboard can say whether the live site is behind
+const SiteState = mongoose.model('SiteState', new mongoose.Schema({
+  contentUpdatedAt: Date,
+  publishRequestedAt: Date
+}, { versionKey: false }))
+
+async function touchSiteState(field) {
+  await SiteState.updateOne({}, { $set: { [field]: new Date() } }, { upsert: true })
+}
+
+module.exports = { content, Profile, Message, Admin, SiteState, touchSiteState }

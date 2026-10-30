@@ -1,5 +1,5 @@
 const express = require('express')
-const { content, Profile, Message } = require('../models')
+const { content, Profile, Message, SiteState, touchSiteState } = require('../models')
 const { requireAdmin } = require('../middleware/auth')
 const { crudRouter, pickFields, validId } = require('../lib/crud')
 const { triggerPublish } = require('../lib/github')
@@ -15,7 +15,12 @@ router.get('/summary', async (req, res) => {
   }
   counts.newMessages = await Message.countDocuments({ status: 'new' })
   counts.messages = await Message.countDocuments()
-  res.json({ counts })
+  const state = await SiteState.findOne().lean()
+  res.json({
+    counts,
+    contentUpdatedAt: state?.contentUpdatedAt || null,
+    publishRequestedAt: state?.publishRequestedAt || null
+  })
 })
 
 // Profile (single document)
@@ -28,6 +33,7 @@ router.put('/profile', async (req, res) => {
   if (!profile) profile = new Profile()
   profile.set(pickFields(Profile, req.body))
   await profile.save()
+  await touchSiteState('contentUpdatedAt')
   res.json({ item: profile })
 })
 
@@ -64,6 +70,7 @@ router.delete('/messages/:id', validId, async (req, res) => {
 // Rebuild the public site with the latest content
 router.post('/publish', async (req, res) => {
   const result = await triggerPublish()
+  await touchSiteState('publishRequestedAt')
   res.status(202).json({ ok: true, ...result })
 })
 

@@ -2,10 +2,13 @@ import { useState } from 'react'
 import { Rocket, Loader2 } from 'lucide-react'
 import { api } from '../api'
 import { btn } from '../ui'
+import { publishState, useSiteStatus } from '../siteStatus'
 
 // Rebuilds the public site from the saved content (takes about 2 minutes)
 export default function PublishButton({ compact = false }) {
+  const { summary, refresh } = useSiteStatus()
   const [state, setState] = useState({ status: 'idle', message: '', link: '' })
+  const behind = ['pending', 'stale'].includes(publishState(summary).state)
 
   async function publish() {
     setState({ status: 'busy', message: '', link: '' })
@@ -16,6 +19,7 @@ export default function PublishButton({ compact = false }) {
         message: 'Publishing started. Your changes will be live in about 2 minutes.',
         link: data.actionsUrl
       })
+      refresh()
     } catch (err) {
       setState({ status: 'error', message: err.message, link: '' })
     }
@@ -23,11 +27,17 @@ export default function PublishButton({ compact = false }) {
 
   return (
     <div className={compact ? 'relative' : 'space-y-2'}>
-      <button type="button" onClick={publish} disabled={state.status === 'busy'} className={btn.primary}>
+      <button type="button" onClick={publish} disabled={state.status === 'busy'} className={`${btn.primary} relative`}>
         {state.status === 'busy'
           ? <Loader2 size={16} className="animate-spin" aria-hidden="true" />
           : <Rocket size={16} aria-hidden="true" />}
         Publish site
+        {behind && (
+          <>
+            <span className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-[var(--warning)] ring-2 ring-[var(--bg-primary)]" aria-hidden="true" />
+            <span className="sr-only"> (unpublished changes)</span>
+          </>
+        )}
       </button>
       {/* In the top bar the message floats below the button instead of stretching the header */}
       <div

@@ -25,6 +25,7 @@
     --accent-soft: #eff6ff;
     --accent-secondary: #6366f1; /* legacy, being phased out (see DESIGN.md) */
     --success: #15803d;
+    --warning: #b45309; /* 5.0:1 on white */
     --error: #b91c1c;
     --border-color: #e2e8f0;
   }
@@ -42,6 +43,7 @@
     --accent-soft: #1e3a8a33;
     --accent-secondary: #818cf8; /* legacy, being phased out (see DESIGN.md) */
     --success: #4ade80;
+    --warning: #fbbf24;
     --error: #f87171;
     --border-color: #334155;
   }

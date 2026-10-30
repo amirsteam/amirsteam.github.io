@@ -103,6 +103,26 @@ test('profile can be edited', async () => {
   assert.equal(res.body.item.name, 'Amir Bahadur Shrestha')
 })
 
+test('reorder changes the list order and marks content as changed', async () => {
+  const auth = { Authorization: `Bearer ${token}` }
+  const before = await request(app).get('/api/admin/summary').set(auth).expect(200)
+  const list = await request(app).get('/api/admin/services').set(auth).expect(200)
+  const ids = list.body.items.map((s) => s.id).reverse()
+
+  for (const bad of [{}, { ids: [] }, { ids: ['not-an-id'] }, { ids: [ids[0], ids[0]] }, { ids: [{ $ne: null }] }]) {
+    await request(app).put('/api/admin/services/reorder').set(auth).send(bad).expect(400)
+  }
+
+  const res = await request(app).put('/api/admin/services/reorder').set(auth).send({ ids }).expect(200)
+  assert.deepEqual(res.body.items.map((s) => s.id), ids)
+  const pub = await request(app).get('/api/content').expect(200)
+  assert.equal(pub.body.services[0].title, list.body.items.at(-1).title)
+
+  const after = await request(app).get('/api/admin/summary').set(auth).expect(200)
+  assert.ok(after.body.contentUpdatedAt)
+  assert.ok(!before.body.contentUpdatedAt || new Date(after.body.contentUpdatedAt) >= new Date(before.body.contentUpdatedAt))
+})
+
 test('contact form saves messages; honeypot and bad input are handled', async () => {
   await request(app).post('/api/contact')
     .send({ name: 'Visitor', email: 'v@example.com', subject: 'project', message: 'Hello', status: 'replied' })

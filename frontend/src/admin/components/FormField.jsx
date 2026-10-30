@@ -1,4 +1,29 @@
+import { useState } from 'react'
 import { input } from '../ui'
+
+// Live preview under an image path field
+function ImagePreview({ src }) {
+  const [failed, setFailed] = useState(false)
+  if (!src) {
+    return (
+      <p className="mt-2 text-xs text-[var(--text-secondary)]">
+        No image set: when you publish, the card uses an automatic screenshot of the live site URL
+        (or a plain panel if there is none).
+      </p>
+    )
+  }
+  if (failed) {
+    return <p className="mt-2 text-xs text-[var(--error)]">No image found at this path. Check the file name and folder.</p>
+  }
+  return (
+    <img
+      src={src}
+      alt="Preview of the screenshot"
+      onError={() => setFailed(true)}
+      className="mt-2 w-full max-w-sm aspect-video object-cover rounded-lg border border-[var(--border-color)] bg-[var(--bg-secondary)]"
+    />
+  )
+}
 
 // One labelled input for a field definition from resources.js
 export default function FormField({ field, value, onChange, error }) {
@@ -70,6 +95,8 @@ export default function FormField({ field, value, onChange, error }) {
       {control}
       {field.help && <p id={`${id}-help`} className="text-xs text-[var(--text-muted)] mt-1">{field.help}</p>}
       {error && <p id={`${id}-error`} className="text-xs text-[var(--error)] mt-1">{error}</p>}
+      {/* key: a new path gets a fresh preview (and clears "not found") */}
+      {field.type === 'image' && <ImagePreview key={value || ''} src={(value || '').trim()} />}
     </div>
   )
 }

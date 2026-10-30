@@ -1,5 +1,6 @@
 // Which content types the admin edits, and the form fields for each.
-// Field types: text, textarea, url, number, checkbox, select, list (one item per line).
+// Field types: text, textarea, url, number, checkbox, select, list (one item per line),
+// image (a path or URL, with a preview). `short` is the column name in lists.
 import { Briefcase, Wrench, Layers, GraduationCap, School, Quote } from 'lucide-react'
 
 const SERVICE_ICONS = ['School', 'ShoppingCart', 'Newspaper', 'Briefcase']
@@ -25,10 +26,10 @@ export const resources = {
       { name: 'problem', label: 'Problem', type: 'textarea', rows: 2 },
       { name: 'solution', label: 'What I built', type: 'textarea', rows: 3 },
       { name: 'techStack', label: 'Tech stack', type: 'list', help: 'One per line. The first four show on the card.' },
-      { name: 'thumbnail', label: 'Screenshot path', type: 'text', help: 'Leave empty to use an automatic screenshot of the live site (taken when you publish). Or enter your own file, e.g. /projects/my-project.webp (in frontend/public/projects).' },
+      { name: 'thumbnail', label: 'Screenshot path', type: 'image', help: 'Leave empty to use an automatic screenshot of the live site (taken when you publish). Or enter your own file, e.g. /projects/my-project.webp (in frontend/public/projects).' },
       { name: 'liveUrl', label: 'Live site URL', type: 'url' },
       { name: 'githubUrl', label: 'Source code URL', type: 'url' },
-      { name: 'featured', label: 'Featured (shown on the home page)', type: 'checkbox' },
+      { name: 'featured', label: 'Featured (shown on the home page)', short: 'Featured', type: 'checkbox' },
       ...publishing
     ]
   },
@@ -45,7 +46,7 @@ export const resources = {
       { name: 'features', label: 'What is included', type: 'list', help: 'One per line.' },
       { name: 'price', label: 'Price', type: 'text', help: 'e.g. From NPR 50,000' },
       { name: 'priceNote', label: 'Price note', type: 'text' },
-      { name: 'popular', label: 'Highlight as "Most Popular"', type: 'checkbox' },
+      { name: 'popular', label: 'Highlight as "Most Popular"', short: 'Popular', type: 'checkbox' },
       ...publishing
     ]
   },
@@ -129,5 +130,6 @@ export const profileFields = [
   { name: 'social.twitter', label: 'Twitter / X URL', type: 'url' },
   { name: 'social.youtube', label: 'YouTube URL', type: 'url' },
   { name: 'bio', label: 'Bio (About page)', type: 'textarea', rows: 10, help: 'Leave a blank line between paragraphs.' },
+  { name: 'primaryGoals', label: 'What I am looking for (About page)', type: 'list', rows: 3, help: 'One per line, e.g. Freelancing.' },
   { name: 'stats', label: 'About-page stats', type: 'stats', help: 'One per line as "value | label", e.g. 20+ | Projects Completed.' }
 ]

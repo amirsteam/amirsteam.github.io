@@ -1,5 +1,6 @@
 const express = require('express')
 const mongoose = require('mongoose')
+const { touchSiteState } = require('../models')
 
 // Fields the admin can never set directly
 const PROTECTED = new Set(['_id', 'id', '__v', 'createdAt', 'updatedAt'])
@@ -22,6 +23,8 @@ function validId(req, res, next) {
   next()
 }
 
+const contentChanged = () => touchSiteState('contentUpdatedAt')
+
 // List / create / read / update / delete for one content model (admin only)
 function crudRouter(Model) {
   const router = express.Router()
@@ -38,7 +41,24 @@ function crudRouter(Model) {
       data.order = last ? last.order + 1 : 0
     }
     const item = await Model.create(data)
+    await contentChanged()
     res.status(201).json({ item })
+  })
+
+  // New order for the whole list: { ids: [first, second, ...] }
+  router.put('/reorder', async (req, res) => {
+    const ids = req.body?.ids
+    if (!Array.isArray(ids) || ids.length === 0 || ids.length > 500 ||
+        !ids.every((id) => typeof id === 'string' && mongoose.isValidObjectId(id)) ||
+        new Set(ids).size !== ids.length) {
+      return res.status(400).json({ error: 'Send the list of item ids in their new order' })
+    }
+    await Model.bulkWrite(ids.map((id, index) => ({
+      updateOne: { filter: { _id: id }, update: { $set: { order: index } } }
+    })))
+    await contentChanged()
+    const items = await Model.find().sort({ order: 1, createdAt: 1 })
+    res.json({ items })
   })
 
   router.get('/:id', validId, async (req, res) => {
@@ -52,12 +72,14 @@ function crudRouter(Model) {
     if (!item) return res.status(404).json({ error: 'Not found' })
     item.set(pickFields(Model, req.body))
     await item.save()
+    await contentChanged()
     res.json({ item })
   })
 
   router.delete('/:id', validId, async (req, res) => {
     const item = await Model.findByIdAndDelete(req.params.id)
     if (!item) return res.status(404).json({ error: 'Not found' })
+    await contentChanged()
     res.status(204).end()
   })
 
